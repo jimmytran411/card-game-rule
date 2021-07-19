@@ -1,25 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Grid } from '@material-ui/core';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+import { Rules } from './Components/Rules';
+import { TableOfContents } from './Components/TableOfContents';
+import { RuleSearch } from './Components/RuleSearch';
+import { RuleProvider } from './Contexts/RuleContext';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <RuleProvider>
+            <RuleSearch />
+          </RuleProvider>
+        </Route>
+        <Route path="/rules">
+          <RuleProvider>
+            <Grid container>
+              <Grid item xs={4}>
+                <TableOfContents />
+              </Grid>
+              <Grid item xs={8}>
+                <Rules />
+              </Grid>
+            </Grid>
+          </RuleProvider>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
