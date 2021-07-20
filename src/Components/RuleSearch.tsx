@@ -1,28 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@material-ui/core';
 import { FieldValues } from 'react-hook-form';
-import { getRule } from '../api/rule';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
+import qs from 'qs';
 
-import { DynamicForm } from './Form';
-import { useRule } from '../Contexts/RuleContext';
+import { DynamicForm } from './Generic/Form';
+import { useRuleSearch } from '../Contexts/RuleSearchContext';
 
 export const RuleSearch: React.FC = () => {
-  const [error, setError] = useState();
-  const { setRuleBook } = useRule();
+  const { handleSearch } = useRuleSearch();
+  const { url } = useRouteMatch();
   const history = useHistory();
 
-  const onSubmit = async (fields: FieldValues) => {
-    try {
-      const { data } = await getRule(fields.url);
-      setRuleBook(data);
-      history.push('/rules');
-    } catch (error) {
-      setError(error);
-    }
+  const onSubmit = ({ rule }: FieldValues) => {
+    const qsString = qs.stringify({ rule });
+    history.push(`${url}/search?${qsString}`);
+    handleSearch(rule);
   };
 
-  const SearchButton = () => (
+  const searchButton = () => (
     <Button variant="outlined" type="submit">
       Search
     </Button>
@@ -30,18 +26,17 @@ export const RuleSearch: React.FC = () => {
 
   return (
     <>
-      {error && error}
       <DynamicForm
         onSubmit={onSubmit}
         inputFields={[
           {
-            name: 'url',
-            label: 'rule url',
+            name: 'rule',
+            label: 'rule search',
             type: 'text',
             isRequired: false,
           },
         ]}
-        submitButton={SearchButton}
+        submitButton={searchButton}
       />
     </>
   );

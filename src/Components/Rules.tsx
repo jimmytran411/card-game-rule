@@ -1,13 +1,12 @@
 import React from 'react';
-import { List, ListItem, ListItemText } from '@material-ui/core';
-import { v4 as uuidV4 } from 'uuid';
+import { CircularProgress } from '@material-ui/core';
 
-import { useRule } from '../Contexts/RuleContext';
-import { NestedRoute, NestedRoutes } from './NestedRoutes';
-import { Redirect } from 'react-router-dom';
+import { useRuleBook } from '../Contexts/RuleBookContext';
+import { NestedRoute, NestedRoutes } from './Generic/NestedRoutes';
+import { RuleList } from './RuleList';
 
 export const Rules = () => {
-  const { chapters, rules } = useRule().ruleBook;
+  const { chapters, rules } = useRuleBook().ruleBook;
 
   const routeList = React.useMemo(() => {
     const rulesByChapters = chapters.map((chapter) =>
@@ -18,28 +17,18 @@ export const Rules = () => {
       })
     );
 
-    const routeList: NestedRoute[] = rulesByChapters.map((rules, index) => {
+    return rulesByChapters.map((rules, index) => {
       const route: NestedRoute = {
         path: chapters[index].replace(' ', '-').replace('.', ''),
-        renderContent: () => (
-          <List>
-            {rules.map((rule) => (
-              <ListItem key={uuidV4()}>
-                <ListItemText primary={rule} />
-              </ListItem>
-            ))}
-          </List>
-        ),
+        renderContent: () => <RuleList ruleList={rules} />,
       };
       return route;
     });
-
-    return routeList;
   }, [chapters, rules]);
+
   return (
     <>
-      {!rules.length && <Redirect to="/" />}
-
+      {!rules.length && <CircularProgress />}
       {rules.length && <NestedRoutes routeList={routeList} />}
     </>
   );

@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
+import { CircularProgress } from '@material-ui/core';
 
-import { useRule } from '../Contexts/RuleContext';
-import { NestedNav, NavItem } from './NestedNav';
-import { Redirect } from 'react-router-dom';
+import { useRuleBook } from '../Contexts/RuleBookContext';
+import { NavItem, NestedNav } from './Generic/NestedNav';
 
 export const TableOfContents: React.FC = () => {
-  const { sections, chapters } = useRule().ruleBook;
+  const { chapters } = useRuleBook().ruleBook;
 
   const navList = useMemo(() => {
     const navList: NavItem[] = chapters.map((chapter) => ({
@@ -17,7 +17,7 @@ export const TableOfContents: React.FC = () => {
 
   return (
     <>
-      {!chapters.length && <Redirect to="/" />}
+      {!chapters.length && <CircularProgress />}
       {chapters.length && <NestedNav navList={navList} />}
     </>
   );

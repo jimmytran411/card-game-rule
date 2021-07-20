@@ -20,11 +20,11 @@ export const NestedNav: React.FC<NestedNavProps> = ({ navList }) => {
   return (
     <List>
       {navList.map(({ path, content, contentClassName, activeClassName }) => (
-        <ListItem key={uuidV4()} button>
-          <NavLink activeClassName={activeClassName} to={`${url}/${path}`}>
+        <NavLink key={uuidV4()} activeClassName={activeClassName} to={`${url}/${path}`}>
+          <ListItem button>
             {typeof content === 'string' ? <ListItemText className={contentClassName} primary={content} /> : content()}
-          </NavLink>
-        </ListItem>
+          </ListItem>
+        </NavLink>
       ))}
     </List>
   );
