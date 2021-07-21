@@ -2,8 +2,8 @@ import React from 'react';
 import { List, ListItem, ListItemText } from '@material-ui/core';
 import { v4 as uuidV4 } from 'uuid';
 
-import { usePagination } from '../customHooks/usePagination';
-import { Pagination } from './Generic/Pagination';
+import { usePagination } from '../../customHooks/usePagination';
+import { Pagination } from './Pagination';
 
 interface RuleListProps {
   ruleList: string[];
