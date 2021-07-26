@@ -7,12 +7,14 @@
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-empty-function": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off"
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "no-useless-escape": "off"
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "jsx": true,
-    "useJSXTextNode": true
+    "useJSXTextNode": true,
+    "ecmaVersion": 11
   },
-  "extends": ["plugin:@typescript-eslint/recommended"]
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:react-hooks/recommended"]
 }
