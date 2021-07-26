@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Button } from '@material-ui/core';
-import { FieldValues } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from "react";
+import { Button } from "@material-ui/core";
+import { FieldValues } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 
-import { getRule } from '../api/rule';
-import { DynamicForm } from './Generic/Form';
-import { useRuleBook } from '../Contexts/RuleBookContext';
+import { getRule } from "../api/rule";
+import { DynamicForm } from "./Generic/Form";
+import { useRuleBook } from "../Contexts/RuleBookContext";
 
 export const RuleFetcher: React.FC = () => {
   const [error, setError] = useState();
@@ -16,7 +16,7 @@ export const RuleFetcher: React.FC = () => {
     try {
       const { data } = await getRule(fields.url);
       setRuleBook(data);
-      history.push('/rules');
+      history.push("/rules");
     } catch (error) {
       setError(error);
     }
@@ -35,10 +35,11 @@ export const RuleFetcher: React.FC = () => {
         onSubmit={onSubmit}
         inputFields={[
           {
-            name: 'url',
-            label: 'rule url',
-            type: 'text',
+            name: "url",
+            label: "rule url",
+            type: "text",
             isRequired: false,
+            fullWidth: true,
           },
         ]}
         submitButton={searchButton}

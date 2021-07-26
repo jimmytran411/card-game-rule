@@ -1,9 +1,9 @@
-import React from 'react';
-import { CircularProgress } from '@material-ui/core';
+import React from "react";
+import { CircularProgress } from "@material-ui/core";
 
-import { useRuleBook } from '../Contexts/RuleBookContext';
-import { NestedRoute, NestedRoutes } from './Generic/NestedRoutes';
-import { RuleList } from './RuleList';
+import { useRuleBook } from "../Contexts/RuleBookContext";
+import { NestedRoute, NestedRoutes } from "./Generic/NestedRoutes";
+import { RuleList } from "./Generic/RuleList";
 
 export const Rules = () => {
   const { chapters, rules } = useRuleBook().ruleBook;
@@ -12,15 +12,15 @@ export const Rules = () => {
     const rulesByChapters = chapters.map((chapter) =>
       rules.filter((rules) => {
         const chapterNum = chapter.slice(0, 3);
-        const regex = new RegExp(`(?<!\s|\.)${chapterNum}`, 'g');
+        const regex = new RegExp(`(?<!\s|\.)${chapterNum}`, "g");
         return rules.match(regex);
       })
     );
 
     return rulesByChapters.map((rules, index) => {
       const route: NestedRoute = {
-        path: chapters[index].replace(' ', '-').replace('.', ''),
-        renderContent: () => <RuleList ruleList={rules} />,
+        path: chapters[index].replace(/\s|\./g, "-"),
+        renderContent: () => <RuleList ruleList={rules} ruleChapter={chapters[index]} />,
       };
       return route;
     });

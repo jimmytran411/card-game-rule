@@ -9,11 +9,11 @@ export const useRule = () => {
 
   const searchRule = React.useMemo(() => {
     if (searchParam.length) {
-      return fetchedRules.filter((rule) => rule.includes(searchParam));
+      return fetchedRules.filter((rule) => rule.toLowerCase().includes(searchParam.toLowerCase()));
     } else {
       return [];
     }
   }, [fetchedRules, searchParam]);
 
-  return [searchRule];
+  return {searchRule, searchParam};
 };

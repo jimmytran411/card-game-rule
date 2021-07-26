@@ -5,6 +5,8 @@ import { v4 as uuidV4 } from "uuid";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList, ListOnScrollProps } from "react-window";
 
+import { scrollToTop } from "../../utils/scroll";
+
 const useStyles = makeStyles((theme: Theme) => ({
   defaultNav: {
     textDecoration: "none",
@@ -47,6 +49,7 @@ export const NestedNav: React.FC<NestedNavProps> = ({ navList }) => {
       setIsBottom(true);
     }
   };
+
   return (
     <AutoSizer>
       {({ width, height }) => (
@@ -74,7 +77,7 @@ export const NestedNav: React.FC<NestedNavProps> = ({ navList }) => {
                     className={navClassName ? navClassName : defaultNav}
                     to={`${url}/${path}`}
                   >
-                    <ListItem button>
+                    <ListItem button onClick={scrollToTop}>
                       {typeof content === "string" ? (
                         <ListItemText className={contentClassName} primary={content} />
                       ) : (
