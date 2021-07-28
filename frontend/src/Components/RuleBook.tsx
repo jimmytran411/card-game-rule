@@ -4,7 +4,7 @@ import {
   CssBaseline,
   Divider,
   Drawer,
-  Grid,
+
   IconButton,
   makeStyles,
   Theme,
@@ -17,6 +17,7 @@ import { Rules } from "./Rules";
 import { RuleSearchResult } from "./RuleSearchResult";
 import { TableOfContents } from "./TableOfContents";
 import { RuleSearch } from "./RuleSearch";
+import { useDrawer } from "../customHooks/useDrawer";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -28,11 +29,22 @@ const useStyles = makeStyles((theme: Theme) =>
     drawer: {
       width: "33%",
       flexShrink: 0,
+      marginTop: 74
     },
-
     drawerPaper: {
       width: "33%",
+      marginTop: 74,
+      boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)",
+      height: "80%"
     },
+
+    drawerHeader: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: theme.spacing(1),
+    },
+
     content: {
       flexGrow: 2,
       padding: theme.spacing(3),
@@ -42,6 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
         duration: theme.transitions.duration.leavingScreen,
       }),
       marginLeft: "-33%",
+
     },
     contentShift: {
       transition: theme.transitions.create('margin', {
@@ -50,17 +63,15 @@ const useStyles = makeStyles((theme: Theme) =>
       }),
       marginLeft: 0,
     },
+
     ruleSearch: {
-      marginBottom: "1.5rem",
-      alignSelf: 'center',
-      width: "70%"
+      zIndex: theme.zIndex.tooltip,
+      position: 'fixed',
+      right: 0,
+      backgroundColor: theme.palette.success.light,
+      borderRadius: 20
     },
-    drawerHeader: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: theme.spacing(0, 1),
-    },
+
     closedButton: {
       position: 'fixed',
       marginLeft: '33vw',
@@ -87,17 +98,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const RuleBook: React.FC = () => {
   const { root, drawer, drawerPaper, content, ruleSearch, contentShift, drawerHeader, closedButton, openButton, iconButton } = useStyles();
-
-  const [open, setOpen] = React.useState(true);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
+  const { open, handleOpenDrawer, handleCloseDrawer } = useDrawer()
 
   return (
     <div className={root}>
@@ -118,22 +119,21 @@ export const RuleBook: React.FC = () => {
       </Drawer>
 
       <span className={open ? closedButton : openButton}>
-        {open ? (<IconButton className={iconButton} onClick={handleDrawerClose}>
+        {open ? (<IconButton className={iconButton} onClick={handleCloseDrawer}>
           <ChevronLeftIcon />
-        </IconButton>) : (<IconButton className={iconButton} onClick={handleDrawerOpen}>
+        </IconButton>) : (<IconButton className={iconButton} onClick={handleOpenDrawer}>
           <ChevronRightIcon />
         </IconButton>)}
       </span>
 
-      <Grid className={open ? `${content} ${contentShift}` : content} container direction="column" spacing={2}>
-        <Grid className={ruleSearch} item xs>
-          <RuleSearch />
-        </Grid>
-        <Grid item xs>
-          <Rules />
-          <RuleSearchResult />
-        </Grid>
-      </Grid>
+      <div className={open ? `${content} ${contentShift}` : content} >
+        <Rules />
+        <RuleSearchResult />
+      </div>
+
+      <span className={ruleSearch}>
+        <RuleSearch />
+      </span>
     </div>
   );
 };
