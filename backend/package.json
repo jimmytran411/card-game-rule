@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "concurrently \"yarn build-ts\" \"yarn server\"",
+    "start": "yarn server",
     "server": "node dist/server.js",
     "watch-node": "nodemon dist/server.js",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
@@ -12,7 +12,8 @@
     "watch-ts": "tsc -w",
     "debug": "npm run build && npm run watch-debug",
     "server-debug": "nodemon --inspect dist/server.js",
-    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\""
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\"",
+    "heroku-postbuild": "yarn build-ts"
   },
   "devDependencies": {
     "@types/concurrently": "^6.2.1",
@@ -25,12 +26,9 @@
   },
   "dependencies": {
     "@types/cors": "^2.8.12",
+    "@types/lodash": "^4.14.171",
     "axios": "^0.21.1",
     "cors": "^2.8.5",
     "express": "^4.17.1"
-  },
-  "engines": {
-    "node": "14.x",
-    "yarn": "1.22.x"
   }
 }
