@@ -6,11 +6,14 @@ import mainApp from "./app";
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
 app.use("/api/v1", mainApp);
+app.use("/", (req, res) => {
+  res.send("Server Running");
+});
 
 // app.use(express.static(path.join(__dirname, 'public')));
 // app.use(express.static(path.join(__dirname, 'frontend/build')));
