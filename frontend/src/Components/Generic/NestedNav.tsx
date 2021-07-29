@@ -55,7 +55,7 @@ export const NestedNav: React.FC<NestedNavProps> = ({ navList }) => {
       {({ width, height }) => (
         <FixedSizeList
           width={width}
-          height={height}
+          height={height - 49}
           itemCount={navList.length}
           itemSize={40}
           itemData={navList}

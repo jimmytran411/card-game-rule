@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import { RuleBook } from '../common/interfaces';
+import { RuleBook } from "../common/interfaces";
 
 interface RuleBookContext {
   ruleBook: RuleBook;
@@ -13,7 +13,7 @@ const defaultValues: RuleBookContext = {
     chapters: [],
     rules: [],
   },
-  setRuleBook: () => { },
+  setRuleBook: () => {},
 };
 
 const RuleBookContext = React.createContext<RuleBookContext>(defaultValues);

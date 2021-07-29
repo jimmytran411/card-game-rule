@@ -1,10 +1,10 @@
-import React from "react";
+import React, { Suspense } from "react";
 import {
+  CircularProgress,
   createStyles,
   CssBaseline,
   Divider,
   Drawer,
-
   IconButton,
   makeStyles,
   Theme,
@@ -15,9 +15,9 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import { Rules } from "./Rules";
 import { RuleSearchResult } from "./RuleSearchResult";
-import { TableOfContents } from "./TableOfContents";
 import { RuleSearch } from "./RuleSearch";
 import { useDrawer } from "../customHooks/useDrawer";
+const TableOfContents = React.lazy(() => import('./TableOfContents'))
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -115,7 +115,9 @@ export const RuleBook: React.FC = () => {
           <Typography variant='h6'>Table of Content</Typography>
         </div>
         <Divider />
-        <TableOfContents />
+        <Suspense fallback={<CircularProgress />}>
+          <TableOfContents />
+        </Suspense>
       </Drawer>
 
       <span className={open ? closedButton : openButton}>

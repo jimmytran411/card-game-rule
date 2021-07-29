@@ -1,6 +1,6 @@
-import * as React from 'react';
-import qs from 'qs';
-import { useLocation } from 'react-router-dom';
+import * as React from "react";
+import qs from "qs";
+import { useLocation } from "react-router-dom";
 
 interface RuleSearchContext {
   searchParam: string;
@@ -8,14 +8,14 @@ interface RuleSearchContext {
 }
 
 const initialState: RuleSearchContext = {
-  searchParam: '',
+  searchParam: "",
   handleSearch: () => {},
 };
 
 const RuleSearchContext = React.createContext<RuleSearchContext>(initialState);
 
 const RuleSearchProvider: React.FC = (props: any) => {
-  const [searchParam, setSearchParam] = React.useState<string>('');
+  const [searchParam, setSearchParam] = React.useState<string>("");
 
   const { search } = useLocation();
 
@@ -25,7 +25,7 @@ const RuleSearchProvider: React.FC = (props: any) => {
 
   React.useEffect(() => {
     const param = qs.parse(search.slice(1));
-    param.rule && setSearchParam(param.rule.toString());
+    param.rule ? setSearchParam(param.rule.toString()) : setSearchParam("");
   }, [search]);
 
   return <RuleSearchContext.Provider value={{ searchParam, handleSearch }} {...props} />;

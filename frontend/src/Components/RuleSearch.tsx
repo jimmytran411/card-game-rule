@@ -2,10 +2,16 @@ import React, { useState } from "react";
 import { Controller, FieldValues, useForm } from "react-hook-form";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import qs from "qs";
-import { Button, CircularProgress, Grid, IconButton, makeStyles, TextField } from "@material-ui/core";
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import {
+  Button,
+  CircularProgress,
+  Grid,
+  IconButton,
+  makeStyles,
+  TextField,
+} from "@material-ui/core";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import SearchIcon from "@material-ui/icons/Search";
-
 
 import { useRuleSearch } from "../Contexts/RuleSearchContext";
 import { scrollToTop } from "../utils/scroll";
@@ -17,9 +23,9 @@ const useStyles = makeStyles({
   },
   form: {
     display: "flex",
-    padding: '10px 0px',
-    width: '64vw'
-  }
+    padding: "10px 0px",
+    width: "64vw",
+  },
 });
 
 export const RuleSearch: React.FC = () => {
@@ -28,7 +34,7 @@ export const RuleSearch: React.FC = () => {
   const { control, handleSubmit } = useForm();
 
   const [disableOnSubmit, setDisable] = useState(false);
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const { handleSearch } = useRuleSearch();
   const { searchField, searchButton, form } = useStyles();
@@ -39,25 +45,26 @@ export const RuleSearch: React.FC = () => {
     historyPush(`${url}/search?${qsString}`);
     handleSearch(rule);
     setDisable(false);
-    setOpen(false)
-    scrollToTop()
+    setOpen(false);
+    scrollToTop();
   };
 
   const handleCloseSearch = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   const handleOpenSearch = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   return (
     <>
-      {!open ?
-        (<IconButton onClick={handleOpenSearch}>
+      {!open ? (
+        <IconButton onClick={handleOpenSearch}>
           <SearchIcon />
-        </IconButton>) :
-        (<form className={form} onSubmit={handleSubmit(onSubmit)}>
+        </IconButton>
+      ) : (
+        <form className={form} onSubmit={handleSubmit(onSubmit)}>
           <IconButton onClick={handleCloseSearch}>
             <ChevronRightIcon />
           </IconButton>
@@ -91,8 +98,8 @@ export const RuleSearch: React.FC = () => {
               </Button>
             </Grid>
           </Grid>
-        </form>)}
-
+        </form>
+      )}
     </>
   );
 };
