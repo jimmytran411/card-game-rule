@@ -13,7 +13,9 @@
     "debug": "npm run build && npm run watch-debug",
     "server-debug": "nodemon --inspect dist/server.js",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\"",
-    "heroku-postbuild": "yarn build-ts"
+    "heroku-postbuild": "yarn build-ts",
+    "dev": "concurrently \"npm run watch\" \"npm run frontend\"",
+    "frontend": "npm start --prefix ../frontend"
   },
   "devDependencies": {
     "@types/concurrently": "^6.2.1",

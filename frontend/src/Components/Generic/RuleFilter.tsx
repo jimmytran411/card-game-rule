@@ -30,7 +30,7 @@ export const RuleFilter: React.FC<RuleFilter> = ({ rule, chapters }) => {
     inlineRules.forEach((inlineRule) => {
       splitRegexpString += `(${inlineRule})`;
     });
-    splitRegexpString = splitRegexpString.replace(")(", ")|(");
+    splitRegexpString = splitRegexpString.replaceAll(")(", ")|(");
     const splitRegexp = new RegExp(splitRegexpString, "gi");
     const ruleSplit = rule.split(splitRegexp);
 
@@ -55,11 +55,12 @@ export const RuleFilter: React.FC<RuleFilter> = ({ rule, chapters }) => {
               />
             ) : (
               <React.Fragment key={v4()}>
+                {ruleLink.split(" ")[0] + " "}
                 <Link
                   className={link}
                   to={`/rules/${chapterLink[inlineRules.indexOf(ruleLink)]}`}
                 >
-                  {ruleLink}
+                  {ruleLink.split(" ")[1]}
                 </Link>
               </React.Fragment>
             );
@@ -75,7 +76,7 @@ export const RuleFilter: React.FC<RuleFilter> = ({ rule, chapters }) => {
 
 function getInlineRule(rule: string) {
   const inlineRules = rule.match(
-    /(rule|see|rules|and) \d{3}((\.(\d{3}|\d{3}\w|\d{2}\w|\d{2}|\d{1}\w|\d{1})|)|)(\–\w|)/gi
+    /(rule|see|rules|and) \d{3}((\.(\d{3}|\d{3}\w|\d{2}\w|\d{2}|\d{1}\w|\d{1})|)|)/gi
   );
 
   return inlineRules;
