@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { RuleBook } from "../common/intefaces";
+import { RuleBook } from "../common/interfaces";
 
 axios.defaults.baseURL = "https://rule-book.herokuapp.com/";
 

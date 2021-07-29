@@ -1,6 +1,7 @@
 import React from 'react'
 import { makeStyles, createStyles, AppBar, Toolbar, Theme, Button } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
+import { useRuleBook } from '../Contexts/RuleBookContext';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -8,7 +9,6 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             flexGrow: 1,
             zIndex: theme.zIndex.drawer + 1,
-
         },
         navButton: {
             flexGrow: 1,
@@ -28,6 +28,18 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const NavBar: React.FC = () => {
     const { root, navButton, activeNav, nav } = useStyles()
+    const { ruleBook } = useRuleBook()
+    const [isRuleBookEmpty, setIsRuleBookEmpty] = React.useState<boolean>(true)
+
+    React.useEffect(() => {
+        const { chapters, rules } = ruleBook;
+        if (!chapters.length || !rules.length) {
+            setIsRuleBookEmpty(true)
+        } else {
+            setIsRuleBookEmpty(false)
+        }
+    }, [ruleBook])
+
     return (
         <div className={root}>
             <AppBar position="static">
@@ -37,11 +49,12 @@ export const NavBar: React.FC = () => {
                             Home
                         </Button>
                     </NavLink>
-                    <NavLink className={nav} activeClassName={activeNav} to="/rules">
-                        <Button className={navButton} variant="text">
-                            Rules
-                        </Button>
-                    </NavLink>
+                    {!isRuleBookEmpty &&
+                        (<NavLink className={nav} activeClassName={activeNav} to="/rules">
+                            <Button className={navButton} variant="text" >
+                                Rules
+                            </Button>
+                        </NavLink>)}
                 </Toolbar>
             </AppBar>
         </div>

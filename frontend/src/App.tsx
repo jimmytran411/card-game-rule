@@ -9,20 +9,19 @@ import { NavBar } from './Components/NavBar';
 function App() {
   return (
     <Router>
-      <NavBar />
       <Switch>
-        <Route exact path="/">
+        <RuleSearchProvider>
           <RuleBookProvider>
-            <RuleFetcher />
-          </RuleBookProvider>
-        </Route>
-        <Route path="/rules">
-          <RuleSearchProvider>
-            <RuleBookProvider>
+            <Route exact path="/">
+              <NavBar />
+              <RuleFetcher />
+            </Route>
+            <Route path="/rules">
+              <NavBar />
               <RuleBook />
-            </RuleBookProvider>
-          </RuleSearchProvider>
-        </Route>
+            </Route>
+          </RuleBookProvider>
+        </RuleSearchProvider>
       </Switch>
     </Router>
   );

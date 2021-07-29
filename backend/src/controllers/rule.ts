@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { Request, Response } from 'express';
+import axios from "axios";
+import { Request, Response } from "express";
 
-import { ruleAnalyser } from '../utils/ruleAnalyser';
+import { ruleAnalyser } from "../utils/ruleAnalyser";
 
 const getRuleWithUrl = async (req: Request, res: Response) => {
   const { url } = req.body;
@@ -12,9 +12,8 @@ const getRuleWithUrl = async (req: Request, res: Response) => {
     const rules = ruleAnalyser(ruleBook.data);
     res.status(200).send(rules);
   } else {
-    res.status(400).send({ message: 'Bad Request' });
+    res.status(400).send({ message: "Bad Request" });
   }
-  res.status(200).end();
 };
 
 export { getRuleWithUrl };
