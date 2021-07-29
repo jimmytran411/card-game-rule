@@ -10,15 +10,14 @@ import {
   Theme,
   Typography,
 } from "@material-ui/core";
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
 import { Rules } from "./Rules";
 import { RuleSearchResult } from "./RuleSearchResult";
 import { RuleSearch } from "./RuleSearch";
 import { useDrawer } from "../customHooks/useDrawer";
-const TableOfContents = React.lazy(() => import('./TableOfContents'))
-
+const TableOfContents = React.lazy(() => import("./TableOfContents"));
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,19 +28,19 @@ const useStyles = makeStyles((theme: Theme) =>
     drawer: {
       width: "33%",
       flexShrink: 0,
-      marginTop: 74
+      marginTop: 74,
     },
     drawerPaper: {
       width: "33%",
       marginTop: 74,
       boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)",
-      height: "80%"
+      height: "80%",
     },
 
     drawerHeader: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
       padding: theme.spacing(1),
     },
 
@@ -49,15 +48,14 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 2,
       padding: theme.spacing(3),
       height: "100%",
-      transition: theme.transitions.create('margin', {
+      transition: theme.transitions.create("margin", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
       marginLeft: "-33%",
-
     },
     contentShift: {
-      transition: theme.transitions.create('margin', {
+      transition: theme.transitions.create("margin", {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
       }),
@@ -66,39 +64,50 @@ const useStyles = makeStyles((theme: Theme) =>
 
     ruleSearch: {
       zIndex: theme.zIndex.tooltip,
-      position: 'fixed',
+      position: "fixed",
       right: 0,
       backgroundColor: theme.palette.success.light,
-      borderRadius: 20
+      borderRadius: 20,
     },
 
     closedButton: {
-      position: 'fixed',
-      marginLeft: '33vw',
-      transition: theme.transitions.create('margin', {
+      position: "fixed",
+      marginLeft: "33vw",
+      transition: theme.transitions.create("margin", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      top: '50vh'
+      top: "50vh",
     },
     openButton: {
-      position: 'fixed',
-      transition: theme.transitions.create('margin', {
+      position: "fixed",
+      transition: theme.transitions.create("margin", {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
       }),
       marginLeft: 0,
-      top: '50vh'
+      top: "50vh",
     },
     iconButton: {
-      padding: 1
-    }
+      padding: 1,
+    },
   })
 );
 
 export const RuleBook: React.FC = () => {
-  const { root, drawer, drawerPaper, content, ruleSearch, contentShift, drawerHeader, closedButton, openButton, iconButton } = useStyles();
-  const { open, handleOpenDrawer, handleCloseDrawer } = useDrawer()
+  const {
+    root,
+    drawer,
+    drawerPaper,
+    content,
+    ruleSearch,
+    contentShift,
+    drawerHeader,
+    closedButton,
+    openButton,
+    iconButton,
+  } = useStyles();
+  const { open, handleOpenDrawer, handleCloseDrawer } = useDrawer();
 
   return (
     <div className={root}>
@@ -112,7 +121,7 @@ export const RuleBook: React.FC = () => {
         }}
       >
         <div className={drawerHeader}>
-          <Typography variant='h6'>Table of Content</Typography>
+          <Typography variant="h6">Table of Contents</Typography>
         </div>
         <Divider />
         <Suspense fallback={<CircularProgress />}>
@@ -121,14 +130,18 @@ export const RuleBook: React.FC = () => {
       </Drawer>
 
       <span className={open ? closedButton : openButton}>
-        {open ? (<IconButton className={iconButton} onClick={handleCloseDrawer}>
-          <ChevronLeftIcon />
-        </IconButton>) : (<IconButton className={iconButton} onClick={handleOpenDrawer}>
-          <ChevronRightIcon />
-        </IconButton>)}
+        {open ? (
+          <IconButton className={iconButton} onClick={handleCloseDrawer}>
+            <ChevronLeftIcon />
+          </IconButton>
+        ) : (
+          <IconButton className={iconButton} onClick={handleOpenDrawer}>
+            <ChevronRightIcon />
+          </IconButton>
+        )}
       </span>
 
-      <div className={open ? `${content} ${contentShift}` : content} >
+      <div className={open ? `${content} ${contentShift}` : content}>
         <Rules />
         <RuleSearchResult />
       </div>
