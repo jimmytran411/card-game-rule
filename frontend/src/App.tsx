@@ -1,28 +1,27 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import { RuleFetcher } from './Components/RuleFetcher';
-import { RuleBookProvider } from './Contexts/RuleBookContext';
-import { RuleSearchProvider } from './Contexts/RuleSearchContext';
-import { RuleBook } from './Components/RuleBook';
-import { NavBar } from './Components/NavBar';
+import { RuleFetcher } from "./Components/RuleFetcher";
+import { RuleBookProvider } from "./Contexts/RuleBookContext";
+import { RuleSearchProvider } from "./Contexts/RuleSearchContext";
+import { RuleBook } from "./Components/RuleBook";
+import { NavBar } from "./Components/NavBar";
 
 function App() {
   return (
     <Router>
-      <NavBar />
       <Switch>
-        <Route exact path="/">
-          <RuleBookProvider>
-            <RuleFetcher />
-          </RuleBookProvider>
-        </Route>
-        <Route path="/rules">
+        <RuleBookProvider>
           <RuleSearchProvider>
-            <RuleBookProvider>
+            <Route exact path="/">
+              <NavBar />
+              <RuleFetcher />
+            </Route>
+            <Route path="/rules">
+              <NavBar />
               <RuleBook />
-            </RuleBookProvider>
+            </Route>
           </RuleSearchProvider>
-        </Route>
+        </RuleBookProvider>
       </Switch>
     </Router>
   );

@@ -1,8 +1,9 @@
 import React, { useMemo } from "react";
-import { CircularProgress, Typography, makeStyles } from "@material-ui/core";
+import { Typography, makeStyles } from "@material-ui/core";
 
 import { useRuleBook } from "../Contexts/RuleBookContext";
 import { NavItem, NestedNav } from "./Generic/NestedNav";
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
   contentItem: {
@@ -11,7 +12,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const TableOfContents: React.FC = () => {
+const TableOfContents: React.FC = () => {
   const { chapters } = useRuleBook().ruleBook;
   const { contentItem } = useStyles();
 
@@ -29,8 +30,10 @@ export const TableOfContents: React.FC = () => {
 
   return (
     <>
-      {!chapters.length && <CircularProgress />}
+      {!chapters.length && <Redirect to="/" />}
       {chapters.length && <NestedNav navList={navList} />}
     </>
   );
 };
+
+export default TableOfContents;

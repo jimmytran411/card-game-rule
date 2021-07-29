@@ -5,7 +5,7 @@ import { useRuleBook } from "../Contexts/RuleBookContext";
 import { NestedRoute, NestedRoutes } from "./Generic/NestedRoutes";
 import { RuleList } from "./Generic/RuleList";
 
-export const Rules = () => {
+export const Rules: React.FC = () => {
   const { chapters, rules } = useRuleBook().ruleBook;
 
   const routeList = React.useMemo(() => {
@@ -20,7 +20,7 @@ export const Rules = () => {
     return rulesByChapters.map((rules, index) => {
       const route: NestedRoute = {
         path: chapters[index].replace(/\s|\./g, "-"),
-        renderContent: () => <RuleList ruleList={rules} ruleChapter={chapters[index]} />,
+        renderContent: () => <RuleList ruleList={rules} ruleChapter={chapters[index]} chapters={chapters} />,
       };
       return route;
     });
