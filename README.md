@@ -89,4 +89,4 @@ To get a local copy up and running follow these simple steps.
 
 An Tran - [LinkedIn](https://www.linkedin.com/in/an-tran-204/) - email: jimmytran411@gmail.com
 
-Project Link: [https://github.com/jimmytran411/Droppe-xmas](https://github.com/jimmytran411/Droppe-xmas)
+Project Link: [https://github.com/jimmytran411/card-game-rule/](https://github.com/jimmytran411/card-game-rule/)
