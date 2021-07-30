@@ -4,6 +4,6 @@ import { getRuleWithUrl } from "../controllers/rule";
 
 const ruleRouter = Router();
 
-ruleRouter.get("/rule-url", getRuleWithUrl);
+ruleRouter.post("/rule-url", getRuleWithUrl);
 
 export { ruleRouter };
