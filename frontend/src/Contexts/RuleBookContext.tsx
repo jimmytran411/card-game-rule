@@ -19,9 +19,24 @@ const defaultValues: RuleBookContext = {
 const RuleBookContext = React.createContext<RuleBookContext>(defaultValues);
 
 const RuleBookProvider = (props: React.PropsWithChildren<any>) => {
-  const [ruleBook, setRuleBook] = React.useState<RuleBook>(defaultValues.ruleBook);
+  const [ruleBook, setRuleBook] = React.useState<RuleBook>(
+    defaultValues.ruleBook
+  );
 
-  return <RuleBookContext.Provider value={{ ruleBook, setRuleBook }} {...props} />;
+  React.useEffect(() => {
+    const ruleFromStorage = localStorage.getItem("ruleBook");
+    if (ruleFromStorage) {
+      setRuleBook(JSON.parse(ruleFromStorage));
+    }
+  }, []);
+
+  React.useEffect(() => {
+    localStorage.setItem("ruleBook", JSON.stringify(ruleBook));
+  }, [ruleBook]);
+
+  return (
+    <RuleBookContext.Provider value={{ ruleBook, setRuleBook }} {...props} />
+  );
 };
 
 const useRuleBook = () => React.useContext(RuleBookContext);
