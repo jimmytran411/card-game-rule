@@ -15,7 +15,7 @@ import {
 import { v4 as uuidV4 } from "uuid";
 
 import { usePagination } from "../../customHooks/usePagination";
-import { Pagination } from "./Pagination";
+import { Pagination } from "../Generic/Pagination";
 import { RuleFilter } from "./RuleFilter";
 
 interface RuleListProps {
@@ -58,7 +58,10 @@ export const RuleList: React.FC<RuleListProps> = ({
         <List>
           {!ruleList.length && "No rule found"}
           {(itemsPerPage > 0
-            ? ruleList.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage)
+            ? ruleList.slice(
+                page * itemsPerPage,
+                page * itemsPerPage + itemsPerPage
+              )
             : ruleList
           ).map((rule) => (
             <ListItem key={uuidV4()}>

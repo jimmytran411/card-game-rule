@@ -13,10 +13,10 @@ import {
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
-import { Rules } from "./Rules";
 import { RuleSearchResult } from "./RuleSearchResult";
 import { RuleSearch } from "./RuleSearch";
 import { useDrawer } from "../customHooks/useDrawer";
+const Rules = React.lazy(() => import("./Rules"));
 const TableOfContents = React.lazy(() => import("./TableOfContents"));
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -142,7 +142,9 @@ export const RuleBook: React.FC = () => {
       </span>
 
       <div className={open ? `${content} ${contentShift}` : content}>
-        <Rules />
+        <Suspense fallback={<CircularProgress />}>
+          <Rules />
+        </Suspense>
         <RuleSearchResult />
       </div>
 
