@@ -10,12 +10,11 @@ import {
   ListItemText,
   makeStyles,
   createStyles,
-  Theme,
 } from "@material-ui/core";
 import { v4 as uuidV4 } from "uuid";
 
 import { usePagination } from "../../customHooks/usePagination";
-import { Pagination } from "./Pagination";
+import { Pagination } from "../Generic/Pagination";
 import { RuleFilter } from "./RuleFilter";
 
 interface RuleListProps {
@@ -24,20 +23,17 @@ interface RuleListProps {
   chapters: string[];
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: "flex",
       justifyContent: "space-between",
       flexDirection: "column",
+      height: "80vh",
+      overflow: "auto",
     },
     ruleTitle: {
       alignSelf: "center",
-    },
-    highlight: {
-      fontWeight: 800,
-      backgroundColor: theme.palette.success.light,
-      color: theme.palette.common.white,
     },
   })
 );
@@ -58,7 +54,10 @@ export const RuleList: React.FC<RuleListProps> = ({
         <List>
           {!ruleList.length && "No rule found"}
           {(itemsPerPage > 0
-            ? ruleList.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage)
+            ? ruleList.slice(
+                page * itemsPerPage,
+                page * itemsPerPage + itemsPerPage
+              )
             : ruleList
           ).map((rule) => (
             <ListItem key={uuidV4()}>

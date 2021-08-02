@@ -1,9 +1,9 @@
-import { Router } from 'express';
+import { Router } from "express";
 
-import { getRuleWithUrl } from '../controllers/rule';
+import { getRuleWithUrl } from "../controllers/rule";
 
 const ruleRouter = Router();
 
-ruleRouter.post('/rule-url', getRuleWithUrl);
+ruleRouter.post("/rule-url", getRuleWithUrl);
 
 export { ruleRouter };

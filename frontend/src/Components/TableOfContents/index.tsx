@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import { Typography, makeStyles } from "@material-ui/core";
 
-import { useRuleBook } from "../Contexts/RuleBookContext";
-import { NavItem, NestedNav } from "./Generic/NestedNav";
+import { useRuleBook } from "../../Contexts/RuleBookContext";
+import { NavItem, NestedNav } from "./NestedNav";
 import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({

@@ -1,11 +1,12 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { CircularProgress } from "@material-ui/core";
 
-import { useRuleBook } from "../Contexts/RuleBookContext";
-import { NestedRoute, NestedRoutes } from "./Generic/NestedRoutes";
-import { RuleList } from "./Generic/RuleList";
+import { useRuleBook } from "../../Contexts/RuleBookContext";
+import { NestedRoute } from "./NestedRoutes";
+import { RuleList } from "./RuleList";
+const NestedRoutes = React.lazy(() => import("./NestedRoutes"));
 
-export const Rules: React.FC = () => {
+const Rules: React.FC = () => {
   const { chapters, rules } = useRuleBook().ruleBook;
 
   const routeList = React.useMemo(() => {
@@ -20,7 +21,13 @@ export const Rules: React.FC = () => {
     return rulesByChapters.map((rules, index) => {
       const route: NestedRoute = {
         path: chapters[index].replace(/\s|\./g, "-"),
-        renderContent: () => <RuleList ruleList={rules} ruleChapter={chapters[index]} chapters={chapters} />,
+        renderContent: () => (
+          <RuleList
+            ruleList={rules}
+            ruleChapter={chapters[index]}
+            chapters={chapters}
+          />
+        ),
       };
       return route;
     });
@@ -29,7 +36,12 @@ export const Rules: React.FC = () => {
   return (
     <>
       {!rules.length && <CircularProgress />}
-      {rules.length && <NestedRoutes routeList={routeList} />}
+      {rules.length && (
+        <Suspense fallback={<CircularProgress />}>
+          <NestedRoutes routeList={routeList} />
+        </Suspense>
+      )}
     </>
   );
 };
+export default Rules;

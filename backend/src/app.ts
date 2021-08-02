@@ -1,9 +1,9 @@
-import express from 'express';
+import express from "express";
 
-import { ruleRouter } from './routes/rule';
+import { ruleRouter } from "./routes/rule";
 
 const app = express();
 
-app.use('/rule', ruleRouter);
+app.use("/rule", ruleRouter);
 
 export default app;

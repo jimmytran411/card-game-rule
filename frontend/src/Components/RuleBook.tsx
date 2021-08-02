@@ -13,10 +13,9 @@ import {
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
-import { Rules } from "./Rules";
 import { RuleSearchResult } from "./RuleSearchResult";
-import { RuleSearch } from "./RuleSearch";
 import { useDrawer } from "../customHooks/useDrawer";
+const Rules = React.lazy(() => import("./Rules"));
 const TableOfContents = React.lazy(() => import("./TableOfContents"));
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -25,14 +24,16 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       height: "100%",
     },
+
     drawer: {
       width: "33%",
       flexShrink: 0,
-      marginTop: 74,
+      marginTop: "15vh",
     },
+
     drawerPaper: {
       width: "33%",
-      marginTop: 74,
+      marginTop: "15vh",
       boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)",
       height: "80%",
     },
@@ -47,27 +48,19 @@ const useStyles = makeStyles((theme: Theme) =>
     content: {
       flexGrow: 2,
       padding: theme.spacing(3),
-      height: "100%",
       transition: theme.transitions.create("margin", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
       marginLeft: "-33%",
     },
+
     contentShift: {
       transition: theme.transitions.create("margin", {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
       }),
       marginLeft: 0,
-    },
-
-    ruleSearch: {
-      zIndex: theme.zIndex.tooltip,
-      position: "fixed",
-      right: 0,
-      backgroundColor: theme.palette.success.light,
-      borderRadius: 20,
     },
 
     closedButton: {
@@ -79,6 +72,7 @@ const useStyles = makeStyles((theme: Theme) =>
       }),
       top: "50vh",
     },
+
     openButton: {
       position: "fixed",
       transition: theme.transitions.create("margin", {
@@ -100,7 +94,6 @@ export const RuleBook: React.FC = () => {
     drawer,
     drawerPaper,
     content,
-    ruleSearch,
     contentShift,
     drawerHeader,
     closedButton,
@@ -142,13 +135,11 @@ export const RuleBook: React.FC = () => {
       </span>
 
       <div className={open ? `${content} ${contentShift}` : content}>
-        <Rules />
+        <Suspense fallback={<CircularProgress />}>
+          <Rules />
+        </Suspense>
         <RuleSearchResult />
       </div>
-
-      <span className={ruleSearch}>
-        <RuleSearch />
-      </span>
     </div>
   );
 };

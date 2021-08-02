@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Controller, FieldValues, useForm } from "react-hook-form";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import qs from "qs";
 import {
   Button,
@@ -29,7 +29,6 @@ const useStyles = makeStyles({
 });
 
 export const RuleSearch: React.FC = () => {
-  const { url } = useRouteMatch();
   const { push: historyPush } = useHistory();
   const { control, handleSubmit } = useForm();
 
@@ -42,7 +41,7 @@ export const RuleSearch: React.FC = () => {
   const onSubmit = ({ rule }: FieldValues) => {
     setDisable(true);
     const qsString = qs.stringify({ rule });
-    historyPush(`${url}/search?${qsString}`);
+    historyPush(`/rules/search?${qsString}`);
     handleSearch(rule);
     setDisable(false);
     setOpen(false);
@@ -68,7 +67,12 @@ export const RuleSearch: React.FC = () => {
           <IconButton onClick={handleCloseSearch}>
             <ChevronRightIcon />
           </IconButton>
-          <Grid container justifyContent="center" alignContent="center" spacing={1}>
+          <Grid
+            container
+            justifyContent="center"
+            alignContent="center"
+            spacing={1}
+          >
             <Grid item xs={8}>
               <Controller
                 name="rule"

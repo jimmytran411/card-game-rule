@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 
 import { RuleFetcher } from "./Components/RuleFetcher";
 import { RuleBookProvider } from "./Contexts/RuleBookContext";
@@ -22,6 +27,7 @@ function App() {
             </Route>
           </RuleSearchProvider>
         </RuleBookProvider>
+        <Redirect from="*" to="/" />
       </Switch>
     </Router>
   );
