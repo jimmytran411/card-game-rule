@@ -18,8 +18,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     textDecoration: "none",
     color: "inherit",
   },
+
   defaultActiveNav: {
     "& div": { backgroundColor: theme.palette.action.hover },
+  },
+
+  listItemEven: {
+    height: "100%",
+    backgroundColor: theme.palette.common.white,
+  },
+
+  listItemOdd: {
+    height: "100%",
   },
 }));
 
@@ -37,7 +47,8 @@ interface NestedNavProps {
 
 export const NestedNav: React.FC<NestedNavProps> = ({ navList }) => {
   const { url } = useRouteMatch();
-  const { defaultNav, defaultActiveNav } = useStyles();
+  const { defaultNav, defaultActiveNav, listItemOdd, listItemEven } =
+    useStyles();
 
   const [isBottom, setIsBottom] = React.useState(false);
   const outerRef = useRef<{
@@ -96,7 +107,11 @@ export const NestedNav: React.FC<NestedNavProps> = ({ navList }) => {
                   className={navClassName ? navClassName : defaultNav}
                   to={`${url}/${path}`}
                 >
-                  <ListItem button onClick={scrollToTop}>
+                  <ListItem
+                    button
+                    onClick={scrollToTop}
+                    className={index % 2 === 1 ? listItemOdd : listItemEven}
+                  >
                     {typeof content === "string" ? (
                       <ListItemText
                         className={contentClassName}

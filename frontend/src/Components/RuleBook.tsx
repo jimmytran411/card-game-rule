@@ -1,140 +1,39 @@
 import React, { Suspense } from "react";
-import {
-  CircularProgress,
-  createStyles,
-  CssBaseline,
-  Divider,
-  Drawer,
-  IconButton,
-  makeStyles,
-  Theme,
-  Typography,
-} from "@material-ui/core";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import { CircularProgress, createStyles, makeStyles } from "@material-ui/core";
 
 import { RuleSearchResult } from "./RuleSearchResult";
-import { useDrawer } from "../customHooks/useDrawer";
 const Rules = React.lazy(() => import("./Rules"));
 const TableOfContents = React.lazy(() => import("./TableOfContents"));
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: "flex",
       height: "100%",
     },
 
-    drawer: {
-      width: "33%",
-      flexShrink: 0,
-      marginTop: "15vh",
-    },
-
-    drawerPaper: {
-      width: "33%",
-      marginTop: "15vh",
-      boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)",
-      height: "80%",
-    },
-
-    drawerHeader: {
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      padding: theme.spacing(1),
+    tableOfContent: {
+      width: "40%",
     },
 
     content: {
-      flexGrow: 2,
-      padding: theme.spacing(3),
-      transition: theme.transitions.create("margin", {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      marginLeft: "-33%",
-    },
-
-    contentShift: {
-      transition: theme.transitions.create("margin", {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-    },
-
-    closedButton: {
-      position: "fixed",
-      marginLeft: "33vw",
-      transition: theme.transitions.create("margin", {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      top: "50vh",
-    },
-
-    openButton: {
-      position: "fixed",
-      transition: theme.transitions.create("margin", {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-      top: "50vh",
-    },
-    iconButton: {
-      padding: 1,
+      width: "60%",
     },
   })
 );
 
 export const RuleBook: React.FC = () => {
-  const {
-    root,
-    drawer,
-    drawerPaper,
-    content,
-    contentShift,
-    drawerHeader,
-    closedButton,
-    openButton,
-    iconButton,
-  } = useStyles();
-  const { open, handleOpenDrawer, handleCloseDrawer } = useDrawer();
+  const { root, content, tableOfContent } = useStyles();
 
   return (
     <div className={root}>
-      <CssBaseline />
-      <Drawer
-        className={drawer}
-        variant="persistent"
-        open={open}
-        classes={{
-          paper: drawerPaper,
-        }}
-      >
-        <div className={drawerHeader}>
-          <Typography variant="h6">Table of Contents</Typography>
-        </div>
-        <Divider />
+      <div className={tableOfContent}>
         <Suspense fallback={<CircularProgress />}>
           <TableOfContents />
         </Suspense>
-      </Drawer>
+      </div>
 
-      <span className={open ? closedButton : openButton}>
-        {open ? (
-          <IconButton className={iconButton} onClick={handleCloseDrawer}>
-            <ChevronLeftIcon />
-          </IconButton>
-        ) : (
-          <IconButton className={iconButton} onClick={handleOpenDrawer}>
-            <ChevronRightIcon />
-          </IconButton>
-        )}
-      </span>
-
-      <div className={open ? `${content} ${contentShift}` : content}>
+      <div className={content}>
         <Suspense fallback={<CircularProgress />}>
           <Rules />
         </Suspense>
