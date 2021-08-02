@@ -112,6 +112,7 @@ export const RuleFetcher: React.FC = () => {
         submitButton={searchButton}
         formClassName={form}
       />
+      <span>{`Example Link: ${process.env.REACT_APP_DEFAULT_RULE_BOOK_URL}`}</span>
     </div>
   );
 };

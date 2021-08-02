@@ -1,6 +1,9 @@
 import React from "react";
 import { makeStyles, createStyles, Theme, Button } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
+import HomeIcon from "@material-ui/icons/Home";
+import MenuBookIcon from "@material-ui/icons/MenuBook";
+
 import { useRuleBook } from "../Contexts/RuleBookContext";
 import { RuleSearch } from "./RuleSearch";
 
@@ -10,9 +13,9 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       zIndex: theme.zIndex.drawer + 1,
       display: "flex",
+      flexDirection: "column",
       alignItems: "center",
       padding: 8,
-      borderBottom: "1px dashed #327abf",
     },
     navButton: {
       flexGrow: 1,
@@ -21,6 +24,10 @@ const useStyles = makeStyles((theme: Theme) =>
       fontFamily: "'Dosis', sans-serif",
       fontSize: 24,
       padding: 4,
+      "&:hover": {
+        backgroundColor: "#6ae7fd",
+        borderRadius: 8,
+      },
     },
     activeNav: {
       borderBottom: `1px solid #327abf`,
@@ -30,10 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: 8,
       margin: 8,
     },
-    ruleSearch: {
-      position: "absolute",
-      right: 24,
-    },
+    ruleSearch: {},
   })
 );
 
@@ -55,13 +59,15 @@ export const NavBar: React.FC = () => {
     <nav className={root}>
       <NavLink className={nav} activeClassName={activeNav} to="/" exact>
         <Button className={navButton} variant="text">
-          Home
+          <HomeIcon />
+          <span>Home</span>
         </Button>
       </NavLink>
       {!isRuleBookEmpty && (
         <NavLink className={nav} activeClassName={activeNav} to="/rules">
           <Button className={navButton} variant="text">
-            Rules
+            <MenuBookIcon />
+            <span>Rules</span>
           </Button>
         </NavLink>
       )}
