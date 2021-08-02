@@ -10,7 +10,6 @@ import {
   ListItemText,
   makeStyles,
   createStyles,
-  Theme,
 } from "@material-ui/core";
 import { v4 as uuidV4 } from "uuid";
 
@@ -24,20 +23,17 @@ interface RuleListProps {
   chapters: string[];
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: "flex",
       justifyContent: "space-between",
       flexDirection: "column",
+      height: "80vh",
+      overflow: "auto",
     },
     ruleTitle: {
       alignSelf: "center",
-    },
-    highlight: {
-      fontWeight: 800,
-      backgroundColor: theme.palette.success.light,
-      color: theme.palette.common.white,
     },
   })
 );

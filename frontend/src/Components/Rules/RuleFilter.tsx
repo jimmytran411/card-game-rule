@@ -17,10 +17,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.primary.main,
     fontWeight: 600,
   },
+  highlight: {
+    fontWeight: 800,
+    backgroundColor: theme.palette.success.light,
+    color: theme.palette.common.white,
+  },
 }));
 
 export const RuleFilter: React.FC<RuleFilter> = ({ rule, chapters }) => {
-  const { link } = useStyles();
+  const { link, highlight } = useStyles();
   const { searchParam } = useRuleSearch();
 
   const inlineRules = getInlineRule(rule);
@@ -34,24 +39,30 @@ export const RuleFilter: React.FC<RuleFilter> = ({ rule, chapters }) => {
     const splitRegexp = new RegExp(splitRegexpString, "gi");
     const ruleSplit = rule.split(splitRegexp);
 
-    const chapterLink = inlineRules.reduce((chapterLink: string[], rule: string) => {
-      const isRule = rule.match(/\d{3}/g) ?? "see rule";
-      const chapter = chapters.find((chapter) => chapter.includes(isRule[0]));
-      chapter && chapterLink.push(chapter.replace(/\s|\./g, "-"));
-      return chapterLink;
-    }, []);
+    const chapterLink = inlineRules.reduce(
+      (chapterLink: string[], rule: string) => {
+        const isRule = rule.match(/\d{3}/g) ?? "see rule";
+        const chapter = chapters.find((chapter) => chapter.includes(isRule[0]));
+        chapter && chapterLink.push(chapter.replace(/\s|\./g, "-"));
+        return chapterLink;
+      },
+      []
+    );
 
     return (
       <>
         {ruleSplit.map((fragment) => {
           if (fragment) {
-            const ruleLink = inlineRules.find((rule) => fragment.includes(rule));
+            const ruleLink = inlineRules.find((rule) =>
+              fragment.includes(rule)
+            );
 
             return !ruleLink ? (
               <Highlighter
                 key={v4()}
                 searchWords={[searchParam]}
                 textToHighlight={fragment}
+                highlightClassName={highlight}
               />
             ) : (
               <React.Fragment key={v4()}>
@@ -70,7 +81,13 @@ export const RuleFilter: React.FC<RuleFilter> = ({ rule, chapters }) => {
       </>
     );
   } else {
-    return <Highlighter searchWords={[searchParam]} textToHighlight={rule} />;
+    return (
+      <Highlighter
+        searchWords={[searchParam]}
+        textToHighlight={rule}
+        highlightClassName={highlight}
+      />
+    );
   }
 };
 

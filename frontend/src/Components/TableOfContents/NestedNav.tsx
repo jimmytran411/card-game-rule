@@ -1,5 +1,11 @@
 import React, { useRef } from "react";
-import { List, ListItem, ListItemText, makeStyles, Theme } from "@material-ui/core";
+import {
+  List,
+  ListItem,
+  ListItemText,
+  makeStyles,
+  Theme,
+} from "@material-ui/core";
 import { NavLink, useRouteMatch } from "react-router-dom";
 import { v4 as uuidV4 } from "uuid";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -34,9 +40,15 @@ export const NestedNav: React.FC<NestedNavProps> = ({ navList }) => {
   const { defaultNav, defaultActiveNav } = useStyles();
 
   const [isBottom, setIsBottom] = React.useState(false);
-  const outerRef = useRef<{ offsetHeight: number; scrollHeight: number } | null>();
+  const outerRef = useRef<{
+    offsetHeight: number;
+    scrollHeight: number;
+  } | null>();
 
-  const onScroll = ({ scrollOffset, scrollUpdateWasRequested }: ListOnScrollProps) => {
+  const onScroll = ({
+    scrollOffset,
+    scrollUpdateWasRequested,
+  }: ListOnScrollProps) => {
     if (scrollUpdateWasRequested === false) {
       setIsBottom(false);
     }
@@ -45,7 +57,10 @@ export const NestedNav: React.FC<NestedNavProps> = ({ navList }) => {
       return;
     }
 
-    if (scrollOffset + outerRef.current.offsetHeight === outerRef.current.scrollHeight) {
+    if (
+      scrollOffset + outerRef.current.offsetHeight ===
+      outerRef.current.scrollHeight
+    ) {
       setIsBottom(true);
     }
   };
@@ -63,29 +78,35 @@ export const NestedNav: React.FC<NestedNavProps> = ({ navList }) => {
           useIsScrolling={!isBottom}
           outerRef={outerRef}
         >
-          {({ index, data, style, isScrolling }) => {
-            const { path, content, contentClassName, activeClassName, navClassName } =
-              data[index];
+          {({ index, data, style }) => {
+            const {
+              path,
+              content,
+              contentClassName,
+              activeClassName,
+              navClassName,
+            } = data[index];
             return (
               <List style={style}>
-                {isScrolling ? (
-                  "Loading ..."
-                ) : (
-                  <NavLink
-                    key={uuidV4()}
-                    activeClassName={activeClassName ? activeClassName : defaultActiveNav}
-                    className={navClassName ? navClassName : defaultNav}
-                    to={`${url}/${path}`}
-                  >
-                    <ListItem button onClick={scrollToTop}>
-                      {typeof content === "string" ? (
-                        <ListItemText className={contentClassName} primary={content} />
-                      ) : (
-                        content()
-                      )}
-                    </ListItem>
-                  </NavLink>
-                )}
+                <NavLink
+                  key={uuidV4()}
+                  activeClassName={
+                    activeClassName ? activeClassName : defaultActiveNav
+                  }
+                  className={navClassName ? navClassName : defaultNav}
+                  to={`${url}/${path}`}
+                >
+                  <ListItem button onClick={scrollToTop}>
+                    {typeof content === "string" ? (
+                      <ListItemText
+                        className={contentClassName}
+                        primary={content}
+                      />
+                    ) : (
+                      content()
+                    )}
+                  </ListItem>
+                </NavLink>
               </List>
             );
           }}
