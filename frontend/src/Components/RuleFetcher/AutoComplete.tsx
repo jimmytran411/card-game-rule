@@ -90,6 +90,10 @@ export default function AutoComplete({
     setOptions(options);
   }, [recentUrl]);
 
+  useEffect(() => {
+    setSearchOptions(options);
+  }, [options]);
+
   const onSelect = (url: string) => {
     setIsComponentVisible(false);
     changeValue(url);
