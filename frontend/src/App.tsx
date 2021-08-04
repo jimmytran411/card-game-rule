@@ -4,13 +4,13 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
+import { makeStyles, Theme } from "@material-ui/core";
 
 import { RuleFetcher } from "./Components/RuleFetcher";
 import { RuleBookProvider } from "./Contexts/RuleBookContext";
 import { RuleSearchProvider } from "./Contexts/RuleSearchContext";
 import { RuleBook } from "./Components/RuleBook";
 import { NavBar } from "./Components/NavBar";
-import { makeStyles, Theme } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {

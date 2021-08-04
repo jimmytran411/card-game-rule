@@ -40,11 +40,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: "4px 8px",
     borderRadius: 4,
     top: 20,
-    right: 0,
     maxWidth: "26vw",
     textAlign: "center",
     [theme.breakpoints.up("xl")]: {
       maxWidth: 390,
+      left: "25%",
     },
     [theme.breakpoints.up("xs")]: {
       maxWidth: "18vw",

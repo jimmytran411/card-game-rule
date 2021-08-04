@@ -6,12 +6,12 @@ import {
   makeStyles,
   Theme,
 } from "@material-ui/core";
-import { FieldValues } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 
-import { getRule } from "../api/rule";
-import { DynamicForm } from "./Generic/Form";
-import { useRuleBook } from "../Contexts/RuleBookContext";
+import { getRule } from "../../api/rule";
+import { useRuleBook } from "../../Contexts/RuleBookContext";
+import AutoComplete from "./AutoComplete";
+import { Controller, FieldValues, useForm } from "react-hook-form";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -26,13 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 
   inputField: {
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-    },
-    [theme.breakpoints.between("sm", "xl")]: {
-      width: "50%",
-    },
-    marginBottom: 20,
+    width: "100%",
     boxShadow: "0 3px 6px #d8d8d8",
   },
 
@@ -47,11 +41,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     "&:hover": {
       backgroundColor: theme.palette.primary.light,
     },
+    marginTop: 20,
   },
 }));
 
 export const RuleFetcher: React.FC = () => {
   const history = useHistory();
+  const { control, handleSubmit, setValue } = useForm();
 
   const [error, setError] = useState("");
   const [disableBtn, setDisableBtn] = useState(false);
@@ -60,12 +56,21 @@ export const RuleFetcher: React.FC = () => {
   const { root, form, inputField, button } = useStyles();
 
   const onSubmit = async (fields: FieldValues) => {
+    const { url } = fields;
     setDisableBtn(true);
-    const isUrl = fields.url.match(/^(ftp|http|https):\/\/[^ "]+$/g);
+    const isUrl = url.match(/^(ftp|http|https):\/\/[^ "]+$/g);
     if (isUrl) {
       try {
-        const { data } = await getRule(fields.url);
+        const { data } = await getRule(url);
         if (data.rules.length) {
+          const recent = localStorage.getItem("ruleFetch");
+          const urlFromStorage = recent ? recent.split(" -/ ") : [];
+          !urlFromStorage.includes(url) &&
+            localStorage.setItem(
+              "ruleFetch",
+              urlFromStorage.join(" -/ ") + url + " -/ "
+            );
+
           setRuleBook(data);
           history.push("/rules");
         } else {
@@ -75,7 +80,7 @@ export const RuleFetcher: React.FC = () => {
           setDisableBtn(false);
         }
       } catch (error) {
-        setError(error.toString());
+        setError("Invalid Url");
         setDisableBtn(false);
       }
     } else {
@@ -97,22 +102,22 @@ export const RuleFetcher: React.FC = () => {
           {error}
         </Typography>
       )}
-      <DynamicForm
-        onSubmit={onSubmit}
-        inputFields={[
-          {
-            name: "url",
-            label: "rule url",
-            type: "text",
-            isRequired: false,
-            fullWidth: true,
-            inputFieldClassName: inputField,
-          },
-        ]}
-        submitButton={searchButton}
-        formClassName={form}
-      />
-      <span>{`Example Link: ${process.env.REACT_APP_DEFAULT_RULE_BOOK_URL}`}</span>
+      <form onSubmit={handleSubmit(onSubmit)} className={form}>
+        <Controller
+          render={({ ...props }) => (
+            <AutoComplete
+              inputClassName={inputField}
+              value={props.field.value}
+              changeValue={(url: string) => setValue("url", url)}
+              {...props}
+            />
+          )}
+          defaultValue=""
+          name="url"
+          control={control}
+        />
+        {searchButton()}
+      </form>
     </div>
   );
 };

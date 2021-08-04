@@ -14,6 +14,8 @@ const useStyles = makeStyles(() =>
 
     tableOfContent: {
       width: "40%",
+      height: "100vh",
+      overflow: "hidden",
     },
 
     content: {
