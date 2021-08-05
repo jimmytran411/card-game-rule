@@ -98,7 +98,7 @@ export const Pagination = ({
         spacing={4}
       >
         <Grid item>
-          <Typography variant="subtitle1">Rows per Page: </Typography>
+          <Typography variant="subtitle1">Items per Page: </Typography>
         </Grid>
         <Grid item>
           <select
@@ -135,9 +135,9 @@ export const Pagination = ({
         >
           <KeyboardArrowLeft className={arrowButton} />
         </IconButton>
-        <span className={currentPage}>{`${
-          itemsPerPage * (page + 1) > count ? count : itemsPerPage * (page + 1)
-        } of ${count}`}</span>
+        <span className={currentPage}>{`Page ${page + 1} of ${Math.ceil(
+          count / itemsPerPage
+        )}`}</span>
         <IconButton
           onClick={handleNextButtonClick}
           disabled={page >= Math.ceil(count / itemsPerPage) - 1}

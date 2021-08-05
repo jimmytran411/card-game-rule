@@ -20,6 +20,7 @@ const useStyles = makeStyles(() =>
 
     content: {
       width: "60%",
+      border: "1px solid #0000003d",
     },
   })
 );
@@ -34,13 +35,14 @@ export const RuleBook: React.FC = () => {
           <TableOfContents />
         </Suspense>
       </div>
-
-      <div className={content}>
-        <Suspense fallback={<CircularProgress />}>
-          <Rules />
-        </Suspense>
-        <RuleSearchResult />
-      </div>
+      <React.StrictMode>
+        <div className={content}>
+          <Suspense fallback={<CircularProgress />}>
+            <Rules />
+          </Suspense>
+          <RuleSearchResult />
+        </div>
+      </React.StrictMode>
     </div>
   );
 };

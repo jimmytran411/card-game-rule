@@ -77,7 +77,17 @@ To get a local copy up and running follow these simple steps.
    yarn install or npm install
    ```
 
-3. Run the App at localhost:
+3. Add environment variable:
+   After installing all the dependencies, for development, you need to set environment variables to enable certain features.
+   In the frontend folder, create new ".env" file. Add:
+
+```sh
+REACT_APP_DEFAULT_RULE_BOOK_URL
+```
+
+and set it equal to the rule file url
+
+4. Run the App at localhost:
    After that, make sure you are at backend folder. You can start the project with the following command:
    ```sh
    yarn run dev or npm run dev

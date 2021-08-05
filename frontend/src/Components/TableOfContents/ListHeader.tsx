@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   header: {
     fontWeight: 700,
     backgroundColor: theme.palette.background.paper,
+    borderBottom: "1px solid #0000003d",
   },
   headerCell: {
     padding: "20px 0px 20px 20px",
@@ -30,14 +31,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export type HeaderProps = {
+export type ListHeaderProps = {
   keys: { key: string; gridSize: GridSize }[];
   onRequestSort: (sortParam: string) => void;
   orderBy: string;
   order: "desc" | "asc";
 };
 
-export const Header: React.FC<HeaderProps> = ({
+export const ListHeader: React.FC<ListHeaderProps> = ({
   keys,
   onRequestSort,
   orderBy,

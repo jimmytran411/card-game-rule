@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import _ from "lodash";
 
-import { HeaderProps } from "../Components/TableOfContents/Header";
+import { ListHeaderProps } from "../Components/TableOfContents/ListHeader";
 
 type UseSort<T> = {
   handleSort: (element: string) => void;
@@ -14,7 +14,7 @@ export const useSort = <T extends { [key: string]: any }>(
   data: T[]
 ): UseSort<T> => {
   const [{ order, orderBy }, setCurrentSort] = useState<
-    Pick<HeaderProps, "order" | "orderBy">
+    Pick<ListHeaderProps, "order" | "orderBy">
   >({
     orderBy: "number",
     order: "asc",

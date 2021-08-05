@@ -33,6 +33,13 @@ const useStyles = makeStyles(() =>
     },
     ruleTitle: {
       paddingLeft: "2rem",
+      borderBottom: "1px solid #0000003d",
+      minHeight: "10%",
+      "& div": {
+        "& span": {
+          fontSize: "2.125rem",
+        },
+      },
     },
     ruleContent: {
       flexGrow: 1,

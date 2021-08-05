@@ -1,18 +1,52 @@
 import React from "react";
 import { Controller, FieldValues, useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-import qs from "qs";
-import { InputAdornment, makeStyles, TextField } from "@material-ui/core";
+import {
+  InputAdornment,
+  makeStyles,
+  TextField,
+  withStyles,
+} from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+import qs from "qs";
 
 import { useRuleSearch } from "../Contexts/RuleSearchContext";
 import { scrollToTop } from "../utils/scroll";
+
+const CssTextField = withStyles({
+  root: {
+    "& label": {
+      color: "white",
+    },
+    "& label.Mui-focused": {
+      color: "#6ae7fd",
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#6ae7fd",
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "white",
+      },
+      "&:hover fieldset": {
+        borderColor: "white",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#6ae7fd",
+      },
+      color: "white",
+    },
+  },
+})(TextField);
 
 const useStyles = makeStyles({
   searchField: {},
   form: {
     display: "flex",
     padding: "10px 0px",
+  },
+  searchIcon: {
+    color: "white",
   },
 });
 
@@ -21,7 +55,7 @@ export const RuleSearch: React.FC = () => {
   const { control, handleSubmit } = useForm();
 
   const { handleSearch } = useRuleSearch();
-  const { searchField, form } = useStyles();
+  const { searchField, form, searchIcon } = useStyles();
 
   const onSubmit = ({ rule }: FieldValues) => {
     const qsString = qs.stringify({ rule });
@@ -39,7 +73,7 @@ export const RuleSearch: React.FC = () => {
           defaultValue=""
           render={({ field }) => (
             <>
-              <TextField
+              <CssTextField
                 label="Rule Search"
                 className={searchField}
                 variant="outlined"
@@ -49,7 +83,7 @@ export const RuleSearch: React.FC = () => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SearchIcon />
+                      <SearchIcon className={searchIcon} />
                     </InputAdornment>
                   ),
                 }}

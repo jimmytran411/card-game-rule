@@ -1,13 +1,32 @@
 import React, { useMemo } from "react";
-import { makeStyles, Divider, Theme, Grid } from "@material-ui/core";
+import {
+  makeStyles,
+  Divider,
+  Theme,
+  Grid,
+  Tooltip,
+  Typography,
+} from "@material-ui/core";
 
 import { useRuleBook } from "../../Contexts/RuleBookContext";
 import { NavItem, NestedNav } from "./NestedNav";
 import { Redirect } from "react-router-dom";
-import { Header } from "./Header";
+import { ListHeader } from "./ListHeader";
 import { useSort } from "../../customHooks/useSort";
 
 const useStyles = makeStyles((theme: Theme) => ({
+  tableOfContentHeader: {
+    padding: theme.spacing(2),
+    fontSize: "1.5rem",
+    fontWeight: 500,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+    borderBottom: "1px solid #0000003d",
+    borderTop: "1px solid #0000003d",
+    minHeight: "10%",
+  },
+
   chapterContent: {
     position: "relative",
   },
@@ -27,55 +46,38 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
 
-  tableOfContentHeader: {
-    padding: theme.spacing(2),
-    fontSize: "1.5rem",
-    fontWeight: 500,
-  },
-
-  tooltipStyle: {
-    position: "absolute",
-    backgroundColor: theme.palette.text.primary,
-    color: theme.palette.common.white,
-    padding: "4px 8px",
-    borderRadius: 4,
-    top: 20,
-    maxWidth: "26vw",
-    textAlign: "center",
-    [theme.breakpoints.up("xl")]: {
-      maxWidth: 390,
-      left: "25%",
-    },
-    [theme.breakpoints.up("xs")]: {
-      maxWidth: "18vw",
-    },
-    zIndex: theme.zIndex.tooltip,
-  },
-
   activeList: {
-    "& div": {
-      backgroundColor: "#327abf",
-      color: "white",
+    "& > div": {
+      fontWeight: 800,
+      border: "3px solid #00000042",
     },
     "& div:hover": {
-      backgroundColor: "#5c91c2",
+      backgroundColor: "#16263c",
       "& div": {
         backgroundColor: "inherit",
       },
     },
   },
+
+  numberStyle: {
+    marginLeft: "auto",
+    width: "fit-content",
+  },
+
+  content: {
+    height: "100%",
+  },
 }));
 
 const TableOfContents: React.FC = () => {
-  const [tooltip, setTooltip] = React.useState<string | number>("");
-
   const { chapters } = useRuleBook().ruleBook;
   const {
     chapterContent,
     tableOfContentHeader,
     chapterTitleStyle,
-    tooltipStyle,
     activeList,
+    numberStyle,
+    content,
   } = useStyles();
 
   const splitChapters = React.useMemo(
@@ -98,20 +100,15 @@ const TableOfContents: React.FC = () => {
     const navList: NavItem[] = sortedData.map(({ title, chapter, number }) => ({
       content: () => {
         return (
-          <Grid
-            container
-            className={chapterContent}
-            onMouseOver={() => setTooltip(number)}
-            onMouseOut={() => setTooltip("")}
-          >
-            {tooltip === number && (
-              <span className={tooltipStyle}>{title}</span>
-            )}
+          <Grid container className={chapterContent}>
             <Grid item xs={3}>
-              {number}
+              <div className={numberStyle}>{number}</div>
             </Grid>
+
             <Grid item xs={9} className={chapterTitleStyle}>
-              {title}
+              <Tooltip title={title} arrow placement="top-start">
+                <span>{title}</span>
+              </Tooltip>
             </Grid>
           </Grid>
         );
@@ -120,23 +117,19 @@ const TableOfContents: React.FC = () => {
       activeClassName: activeList,
     }));
     return navList;
-  }, [
-    sortedData,
-    activeList,
-    chapterContent,
-    tooltip,
-    tooltipStyle,
-    chapterTitleStyle,
-  ]);
+  }, [sortedData, activeList, chapterContent, numberStyle, chapterTitleStyle]);
 
   return (
     <>
       {!chapters.length && <Redirect to="/" />}
       {chapters.length && (
         <>
-          <div className={tableOfContentHeader}>Table of Contents</div>
+          <div className={tableOfContentHeader}>
+            <Typography variant="h4">Table of Contents</Typography>
+            <Typography variant="subtitle2">{`Number of chapters: ${chapters.length}`}</Typography>
+          </div>
           <Divider />
-          <Header
+          <ListHeader
             keys={[
               { key: "number", gridSize: 4 },
               { key: "title", gridSize: 8 },
@@ -145,7 +138,9 @@ const TableOfContents: React.FC = () => {
             orderBy={orderBy}
             onRequestSort={handleSort}
           />
-          <NestedNav navList={navList} />
+          <div className={content}>
+            <NestedNav navList={navList} />
+          </div>
         </>
       )}
     </>

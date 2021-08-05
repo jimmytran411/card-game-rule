@@ -25,14 +25,22 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   listItemEven: {
     height: "100%",
-    backgroundColor: theme.palette.common.white,
+    backgroundColor: "#f2f2f2",
+    "&:hover": {
+      color: "white",
+      backgroundColor: "#16263c",
+    },
   },
 
   listItemOdd: {
     height: "100%",
+    "&:hover": {
+      color: "white",
+      backgroundColor: "#16263c",
+    },
   },
 
-  list: {
+  listItem: {
     padding: 0,
   },
 }));
@@ -51,7 +59,7 @@ interface NestedNavProps {
 
 export const NestedNav: React.FC<NestedNavProps> = ({ navList }) => {
   const { url } = useRouteMatch();
-  const { defaultNav, defaultActiveNav, list, listItemOdd, listItemEven } =
+  const { defaultNav, defaultActiveNav, listItem, listItemOdd, listItemEven } =
     useStyles();
 
   return (
@@ -73,7 +81,7 @@ export const NestedNav: React.FC<NestedNavProps> = ({ navList }) => {
               navClassName,
             } = data[index];
             return (
-              <List style={style} className={list}>
+              <List style={style} className={listItem}>
                 <NavLink
                   key={uuidV4()}
                   activeClassName={

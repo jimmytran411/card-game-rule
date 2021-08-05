@@ -14,30 +14,34 @@ const useStyles = makeStyles((theme: Theme) =>
       zIndex: theme.zIndex.drawer + 1,
       display: "flex",
       flexDirection: "column",
-      alignItems: "center",
       padding: 8,
     },
     navButton: {
       flexGrow: 1,
-      color: "#327abf",
+      color: "#ffffff",
       borderRadius: 8,
       fontFamily: "'Dosis', sans-serif",
       fontSize: 24,
-      padding: 4,
+      padding: "8px 16px",
       "&:hover": {
-        backgroundColor: "#6ae7fd",
         borderRadius: 8,
+        color: "#6ae7fd",
       },
     },
     activeNav: {
-      borderBottom: `1px solid #327abf`,
+      "& button": {
+        borderBottom: "1px solid #ffffff",
+        borderRadius: 0,
+      },
     },
     nav: {
       textDecoration: "none",
       borderRadius: 8,
       margin: 8,
     },
-    ruleSearch: {},
+    ruleSearch: {
+      paddingTop: 16,
+    },
   })
 );
 
@@ -64,7 +68,11 @@ export const NavBar: React.FC = () => {
         </Button>
       </NavLink>
       {!isRuleBookEmpty && (
-        <NavLink className={nav} activeClassName={activeNav} to="/rules">
+        <NavLink
+          className={nav}
+          activeClassName={activeNav}
+          to={`/rules/${ruleBook.chapters[0].replace(/\s|\./g, "-")}`}
+        >
           <Button className={navButton} variant="text">
             <MenuBookIcon />
             <span>Rules</span>

@@ -25,11 +25,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.up("xs")]: {
       width: "100%",
     },
+    backgroundColor: "#16263c",
   },
   main: {
     maxWidth: 1250,
     width: "83.3%",
-    backgroundColor: theme.palette.action.hover,
   },
 }));
 

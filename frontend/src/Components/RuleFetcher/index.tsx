@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 
   button: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.success.main,
     borderRadius: 4,
     padding: "0 48px",
     lineHeight: 3,
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.common.white,
     fontWeight: 600,
     "&:hover": {
-      backgroundColor: theme.palette.primary.light,
+      backgroundColor: theme.palette.success.light,
     },
     marginTop: 20,
   },

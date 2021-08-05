@@ -2,15 +2,11 @@ import React, { useEffect, useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import HistoryIcon from "@material-ui/icons/History";
 import WbIncandescentIcon from "@material-ui/icons/WbIncandescent";
-import {
-  Grid,
-  makeStyles,
-  List,
-  ListItem,
-  ListItemText,
-} from "@material-ui/core";
+import { Grid, makeStyles, List, ListItem } from "@material-ui/core";
 import { v4 } from "uuid";
+
 import { useComponentVisible } from "../../customHooks/useComponentVisible";
+import Highlighter from "react-highlight-words";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,6 +31,12 @@ const useStyles = makeStyles((theme) => ({
   },
   list: {
     backgroundColor: theme.palette.action.hover,
+    padding: 0,
+  },
+  highlight: {
+    fontWeight: 700,
+    color: "white",
+    backgroundColor: theme.palette.text.disabled,
   },
 }));
 
@@ -58,10 +60,11 @@ export default function AutoComplete({
   const [recentUrl, setRecentUrl] = useState<string[] | undefined[]>([""]);
   const [options, setOptions] = useState<Option[]>([]);
   const [searchOptions, setSearchOptions] = useState<Option[]>([]);
+  const [ruleParam, setRuleParam] = useState("");
 
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible(false);
-  const { option, list, root } = useStyles();
+  const { option, list, root, highlight } = useStyles();
 
   useEffect(() => {
     const recentInput = localStorage.getItem("ruleFetch");
@@ -102,10 +105,14 @@ export default function AutoComplete({
   const onChange = (event: any) => {
     changeValue(event.target.value);
     setTimeout(() => {
+      setRuleParam(event.target.value);
       setSearchOptions(
-        options.filter(({ url }) => url && url.includes(event.target.value))
+        options.filter(
+          ({ url }) =>
+            url && url.toLowerCase().includes(event.target.value.toLowerCase())
+        )
       );
-    }, 500);
+    }, 250);
   };
 
   return (
@@ -119,6 +126,7 @@ export default function AutoComplete({
         className={inputClassName}
         fullWidth
         onChange={onChange}
+        placeholder={process.env.REACT_APP_DEFAULT_RULE_BOOK_URL}
       />
 
       {isComponentVisible && (
@@ -133,17 +141,17 @@ export default function AutoComplete({
                     onSelect(url);
                   }}
                 >
-                  <Grid
-                    container
-                    justifyContent="space-between"
-                    alignItems="center"
-                    spacing={1}
-                  >
-                    <Grid item xs={2}>
+                  <Grid container alignItems="center" spacing={1}>
+                    <Grid item xs={1}>
                       {recent && <HistoryIcon />}
                       {suggestion && <WbIncandescentIcon />}
                     </Grid>
-                    <Grid item xs={10}>
+                    <Grid item xs={11}>
+                      <Highlighter
+                        searchWords={[ruleParam]}
+                        textToHighlight={url}
+                        highlightClassName={highlight}
+                      />
                       {url}
                     </Grid>
                   </Grid>
@@ -151,11 +159,6 @@ export default function AutoComplete({
               )}
             </React.Fragment>
           ))}
-          {!searchOptions.length && (
-            <ListItem>
-              <ListItemText primary="No Item found" />
-            </ListItem>
-          )}
         </List>
       )}
     </div>
