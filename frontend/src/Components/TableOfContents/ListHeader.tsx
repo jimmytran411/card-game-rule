@@ -14,9 +14,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 700,
     backgroundColor: theme.palette.background.paper,
     borderBottom: "1px solid #0000003d",
+    padding: 16,
   },
   headerCell: {
-    padding: "20px 0px 20px 20px",
     "& span": {
       display: "flex",
       [theme.breakpoints.between("xs", "sm")]: {
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export type ListHeaderProps = {
-  keys: { key: string; gridSize: GridSize }[];
+  keys: { key: string; gridSize: GridSize; cellClassName?: string }[];
   onRequestSort: (sortParam: string) => void;
   orderBy: string;
   order: "desc" | "asc";
@@ -54,13 +54,18 @@ export const ListHeader: React.FC<ListHeaderProps> = ({
     <Grid
       className={header}
       container
-      spacing={0}
       alignItems="center"
       justifyContent="center"
     >
-      {keys.map(({ key, gridSize }) => (
+      {keys.map(({ key, gridSize, cellClassName }) => (
         <React.Fragment key={uuidV4()}>
-          <Grid className={headerCell} item xs={gridSize}>
+          <Grid
+            className={
+              cellClassName ? `${headerCell} ${cellClassName}` : headerCell
+            }
+            item
+            xs={gridSize}
+          >
             <TableSortLabel
               active={orderBy === key}
               direction={orderBy === key ? order : "asc"}

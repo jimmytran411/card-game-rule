@@ -72,7 +72,11 @@ export const RuleFetcher: React.FC = () => {
             );
 
           setRuleBook(data);
-          history.push("/rules");
+          history.push(
+            `/rules/${
+              data.chapters[0].chapterId
+            }-${data.chapters[0].chapterTitle.replace(/\s|\./g, "-")}`
+          );
         } else {
           setError(
             "The given url does not have correct response format to convert into a Rule Book"

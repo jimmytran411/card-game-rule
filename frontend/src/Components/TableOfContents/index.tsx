@@ -59,9 +59,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
 
+  headerCellNumber: {
+    "& span": {
+      marginLeft: "auto",
+    },
+  },
+
   numberStyle: {
     marginLeft: "auto",
     width: "fit-content",
+    paddingRight: 25,
   },
 
   content: {
@@ -78,44 +85,33 @@ const TableOfContents: React.FC = () => {
     activeList,
     numberStyle,
     content,
+    headerCellNumber,
   } = useStyles();
 
-  const splitChapters = React.useMemo(
-    () =>
-      chapters.map((chapter) => {
-        const chapterNumber = chapter.match(/\d{3}/g);
-        const chapterTitle = chapter.match(/(?!\d)\w.+/g);
-
-        return {
-          number: chapterNumber ? chapterNumber[0] : 0,
-          title: chapterTitle ? chapterTitle[0] : "",
-          chapter,
-        };
-      }),
-    [chapters]
-  );
-  const { handleSort, order, orderBy, sortedData } = useSort(splitChapters);
+  const { handleSort, order, orderBy, sortedData } = useSort(chapters);
 
   const navList = useMemo(() => {
-    const navList: NavItem[] = sortedData.map(({ title, chapter, number }) => ({
-      content: () => {
-        return (
-          <Grid container className={chapterContent}>
-            <Grid item xs={3}>
-              <div className={numberStyle}>{number}</div>
-            </Grid>
+    const navList: NavItem[] = sortedData.map(
+      ({ chapterId, chapterTitle }) => ({
+        content: () => {
+          return (
+            <Grid container className={chapterContent}>
+              <Grid item xs={3}>
+                <div className={numberStyle}>{chapterId}</div>
+              </Grid>
 
-            <Grid item xs={9} className={chapterTitleStyle}>
-              <Tooltip title={title} arrow placement="top-start">
-                <span>{title}</span>
-              </Tooltip>
+              <Grid item xs={9} className={chapterTitleStyle}>
+                <Tooltip title={chapterTitle} arrow placement="top-start">
+                  <span>{chapterTitle}</span>
+                </Tooltip>
+              </Grid>
             </Grid>
-          </Grid>
-        );
-      },
-      path: chapter.replace(/\s|\./g, "-"),
-      activeClassName: activeList,
-    }));
+          );
+        },
+        path: `${chapterId}-${chapterTitle.replace(/\s|\./g, "-")}`,
+        activeClassName: activeList,
+      })
+    );
     return navList;
   }, [sortedData, activeList, chapterContent, numberStyle, chapterTitleStyle]);
 
@@ -131,8 +127,8 @@ const TableOfContents: React.FC = () => {
           <Divider />
           <ListHeader
             keys={[
-              { key: "number", gridSize: 4 },
-              { key: "title", gridSize: 8 },
+              { key: "number", gridSize: 3, cellClassName: headerCellNumber },
+              { key: "title", gridSize: 9, cellClassName: chapterTitleStyle },
             ]}
             order={order}
             orderBy={orderBy}

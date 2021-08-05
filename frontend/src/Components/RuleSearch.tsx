@@ -79,7 +79,7 @@ export const RuleSearch: React.FC = () => {
                 variant="outlined"
                 type="text"
                 fullWidth
-                autoComplete={undefined}
+                autoComplete={"off"}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">

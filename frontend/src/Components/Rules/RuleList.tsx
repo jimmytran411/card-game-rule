@@ -16,11 +16,12 @@ import { v4 as uuidV4 } from "uuid";
 import { usePagination } from "../../customHooks/usePagination";
 import { Pagination } from "./Pagination";
 import { RuleFilter } from "./RuleFilter";
+import { Rule, Chapter } from "../../common/interfaces";
 
 interface RuleListProps {
-  ruleList: string[];
+  ruleList: Rule[];
   ruleChapter?: string;
-  chapters: string[];
+  chapters: Chapter[];
 }
 
 const useStyles = makeStyles(() =>

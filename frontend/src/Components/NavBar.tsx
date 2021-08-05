@@ -42,11 +42,14 @@ const useStyles = makeStyles((theme: Theme) =>
     ruleSearch: {
       paddingTop: 16,
     },
+    navIcon: {
+      paddingRight: 8,
+    },
   })
 );
 
 export const NavBar: React.FC = () => {
-  const { root, navButton, activeNav, nav, ruleSearch } = useStyles();
+  const { root, navButton, activeNav, nav, ruleSearch, navIcon } = useStyles();
   const { ruleBook } = useRuleBook();
   const [isRuleBookEmpty, setIsRuleBookEmpty] = React.useState<boolean>(true);
 
@@ -63,7 +66,7 @@ export const NavBar: React.FC = () => {
     <nav className={root}>
       <NavLink className={nav} activeClassName={activeNav} to="/" exact>
         <Button className={navButton} variant="text">
-          <HomeIcon />
+          <HomeIcon className={navIcon} />
           <span>Home</span>
         </Button>
       </NavLink>
@@ -71,10 +74,10 @@ export const NavBar: React.FC = () => {
         <NavLink
           className={nav}
           activeClassName={activeNav}
-          to={`/rules/${ruleBook.chapters[0].replace(/\s|\./g, "-")}`}
+          to={`/rules/${ruleBook.chapters[0].chapterId}-${ruleBook.chapters[0].chapterTitle}`}
         >
           <Button className={navButton} variant="text">
-            <MenuBookIcon />
+            <MenuBookIcon className={navIcon} />
             <span>Rules</span>
           </Button>
         </NavLink>
