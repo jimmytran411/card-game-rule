@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import {
   List,
   ListItem,
@@ -9,7 +9,7 @@ import {
 import { NavLink, useRouteMatch } from "react-router-dom";
 import { v4 as uuidV4 } from "uuid";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { FixedSizeList, ListOnScrollProps } from "react-window";
+import { FixedSizeList } from "react-window";
 
 import { scrollToTop } from "../../utils/scroll";
 
@@ -18,8 +18,30 @@ const useStyles = makeStyles((theme: Theme) => ({
     textDecoration: "none",
     color: "inherit",
   },
+
   defaultActiveNav: {
     "& div": { backgroundColor: theme.palette.action.hover },
+  },
+
+  listItemEven: {
+    height: "100%",
+    backgroundColor: "#f2f2f2",
+    "&:hover": {
+      color: "white",
+      backgroundColor: "#16263c",
+    },
+  },
+
+  listItemOdd: {
+    height: "100%",
+    "&:hover": {
+      color: "white",
+      backgroundColor: "#16263c",
+    },
+  },
+
+  listItem: {
+    padding: 0,
   },
 }));
 
@@ -37,33 +59,8 @@ interface NestedNavProps {
 
 export const NestedNav: React.FC<NestedNavProps> = ({ navList }) => {
   const { url } = useRouteMatch();
-  const { defaultNav, defaultActiveNav } = useStyles();
-
-  const [isBottom, setIsBottom] = React.useState(false);
-  const outerRef = useRef<{
-    offsetHeight: number;
-    scrollHeight: number;
-  } | null>();
-
-  const onScroll = ({
-    scrollOffset,
-    scrollUpdateWasRequested,
-  }: ListOnScrollProps) => {
-    if (scrollUpdateWasRequested === false) {
-      setIsBottom(false);
-    }
-
-    if (!outerRef.current) {
-      return;
-    }
-
-    if (
-      scrollOffset + outerRef.current.offsetHeight ===
-      outerRef.current.scrollHeight
-    ) {
-      setIsBottom(true);
-    }
-  };
+  const { defaultNav, defaultActiveNav, listItem, listItemOdd, listItemEven } =
+    useStyles();
 
   return (
     <AutoSizer>
@@ -74,9 +71,6 @@ export const NestedNav: React.FC<NestedNavProps> = ({ navList }) => {
           itemCount={navList.length}
           itemSize={40}
           itemData={navList}
-          onScroll={onScroll}
-          useIsScrolling={!isBottom}
-          outerRef={outerRef}
         >
           {({ index, data, style }) => {
             const {
@@ -87,7 +81,7 @@ export const NestedNav: React.FC<NestedNavProps> = ({ navList }) => {
               navClassName,
             } = data[index];
             return (
-              <List style={style}>
+              <List style={style} className={listItem}>
                 <NavLink
                   key={uuidV4()}
                   activeClassName={
@@ -96,7 +90,11 @@ export const NestedNav: React.FC<NestedNavProps> = ({ navList }) => {
                   className={navClassName ? navClassName : defaultNav}
                   to={`${url}/${path}`}
                 >
-                  <ListItem button onClick={scrollToTop}>
+                  <ListItem
+                    button
+                    onClick={scrollToTop}
+                    className={index % 2 === 1 ? listItemOdd : listItemEven}
+                  >
                     {typeof content === "string" ? (
                       <ListItemText
                         className={contentClassName}

@@ -14,26 +14,36 @@ import {
 import { v4 as uuidV4 } from "uuid";
 
 import { usePagination } from "../../customHooks/usePagination";
-import { Pagination } from "../Generic/Pagination";
+import { Pagination } from "./Pagination";
 import { RuleFilter } from "./RuleFilter";
+import { Rule, Chapter } from "../../common/interfaces";
 
 interface RuleListProps {
-  ruleList: string[];
+  ruleList: Rule[];
   ruleChapter?: string;
-  chapters: string[];
+  chapters: Chapter[];
 }
 
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: "flex",
-      justifyContent: "space-between",
       flexDirection: "column",
-      height: "80vh",
+      height: "100vh",
       overflow: "auto",
     },
     ruleTitle: {
-      alignSelf: "center",
+      paddingLeft: "2rem",
+      borderBottom: "1px solid #0000003d",
+      minHeight: "10%",
+      "& div": {
+        "& span": {
+          fontSize: "2.125rem",
+        },
+      },
+    },
+    ruleContent: {
+      flexGrow: 1,
     },
   })
 );
@@ -43,14 +53,14 @@ export const RuleList: React.FC<RuleListProps> = ({
   ruleChapter,
   chapters,
 }) => {
-  const { root, ruleTitle } = useStyles();
+  const { root, ruleTitle, ruleContent } = useStyles();
   const { page, itemsPerPage, handleChangeItemsPerPage, handleChangePage } =
     usePagination();
 
   return (
     <Card className={root} component={Paper}>
       <CardHeader className={ruleTitle} title={ruleChapter} />
-      <CardContent>
+      <CardContent className={ruleContent}>
         <List>
           {!ruleList.length && "No rule found"}
           {(itemsPerPage > 0

@@ -1,6 +1,9 @@
 import React from "react";
 import { makeStyles, createStyles, Theme, Button } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
+import HomeIcon from "@material-ui/icons/Home";
+import MenuBookIcon from "@material-ui/icons/MenuBook";
+
 import { useRuleBook } from "../Contexts/RuleBookContext";
 import { RuleSearch } from "./RuleSearch";
 
@@ -10,20 +13,26 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       zIndex: theme.zIndex.drawer + 1,
       display: "flex",
-      alignItems: "center",
+      flexDirection: "column",
       padding: 8,
-      borderBottom: "1px dashed #327abf",
     },
     navButton: {
       flexGrow: 1,
-      color: "#327abf",
+      color: "#ffffff",
       borderRadius: 8,
       fontFamily: "'Dosis', sans-serif",
       fontSize: 24,
-      padding: 4,
+      padding: "8px 16px",
+      "&:hover": {
+        borderRadius: 8,
+        color: "#6ae7fd",
+      },
     },
     activeNav: {
-      borderBottom: `1px solid #327abf`,
+      "& button": {
+        borderBottom: "1px solid #ffffff",
+        borderRadius: 0,
+      },
     },
     nav: {
       textDecoration: "none",
@@ -31,14 +40,16 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: 8,
     },
     ruleSearch: {
-      position: "absolute",
-      right: 24,
+      paddingTop: 16,
+    },
+    navIcon: {
+      paddingRight: 8,
     },
   })
 );
 
 export const NavBar: React.FC = () => {
-  const { root, navButton, activeNav, nav, ruleSearch } = useStyles();
+  const { root, navButton, activeNav, nav, ruleSearch, navIcon } = useStyles();
   const { ruleBook } = useRuleBook();
   const [isRuleBookEmpty, setIsRuleBookEmpty] = React.useState<boolean>(true);
 
@@ -55,13 +66,19 @@ export const NavBar: React.FC = () => {
     <nav className={root}>
       <NavLink className={nav} activeClassName={activeNav} to="/" exact>
         <Button className={navButton} variant="text">
-          Home
+          <HomeIcon className={navIcon} />
+          <span>Home</span>
         </Button>
       </NavLink>
       {!isRuleBookEmpty && (
-        <NavLink className={nav} activeClassName={activeNav} to="/rules">
+        <NavLink
+          className={nav}
+          activeClassName={activeNav}
+          to={`/rules/${ruleBook.chapters[0].chapterId}-${ruleBook.chapters[0].chapterTitle}`}
+        >
           <Button className={navButton} variant="text">
-            Rules
+            <MenuBookIcon className={navIcon} />
+            <span>Rules</span>
           </Button>
         </NavLink>
       )}

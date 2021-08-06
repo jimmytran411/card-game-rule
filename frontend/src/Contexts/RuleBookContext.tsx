@@ -9,7 +9,6 @@ interface RuleBookContext {
 
 const defaultValues: RuleBookContext = {
   ruleBook: {
-    sections: [],
     chapters: [],
     rules: [],
   },

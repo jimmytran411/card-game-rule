@@ -5,10 +5,12 @@ import { v4 } from "uuid";
 import Highlighter from "react-highlight-words";
 
 import { useRuleSearch } from "../../Contexts/RuleSearchContext";
+import { Chapter, Rule } from "../../common/interfaces";
+import { useRuleBook } from "../../Contexts/RuleBookContext";
 
-interface RuleFilter {
-  rule: string;
-  chapters: string[];
+interface RuleFilterProps {
+  rule: Rule;
+  chapters: Chapter[];
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -24,11 +26,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const RuleFilter: React.FC<RuleFilter> = ({ rule, chapters }) => {
+export const RuleFilter: React.FC<RuleFilterProps> = ({ rule, chapters }) => {
   const { link, highlight } = useStyles();
   const { searchParam } = useRuleSearch();
+  const { chapterId, ruleId, ruleContent } = rule;
 
-  const inlineRules = getInlineRule(rule);
+  const inlineRules = getInlineRule(ruleContent);
 
   if (inlineRules) {
     let splitRegexpString = "";
@@ -37,13 +40,21 @@ export const RuleFilter: React.FC<RuleFilter> = ({ rule, chapters }) => {
     });
     splitRegexpString = splitRegexpString.replaceAll(")(", ")|(");
     const splitRegexp = new RegExp(splitRegexpString, "gi");
-    const ruleSplit = rule.split(splitRegexp);
+    const ruleSplit = ruleContent.split(splitRegexp);
 
     const chapterLink = inlineRules.reduce(
       (chapterLink: string[], rule: string) => {
         const isRule = rule.match(/\d{3}/g) ?? "see rule";
-        const chapter = chapters.find((chapter) => chapter.includes(isRule[0]));
-        chapter && chapterLink.push(chapter.replace(/\s|\./g, "-"));
+        const chapter = chapters.find(({ chapterId }) =>
+          chapterId.includes(isRule[0])
+        );
+        chapter &&
+          chapterLink.push(
+            `${chapter.chapterId}-${chapter.chapterTitle.replace(
+              /\s|\./g,
+              "-"
+            )}`
+          );
         return chapterLink;
       },
       []
@@ -51,6 +62,11 @@ export const RuleFilter: React.FC<RuleFilter> = ({ rule, chapters }) => {
 
     return (
       <>
+        <HyperLinkChapter
+          searchParam={searchParam}
+          chapterIdFromRule={chapterId}
+          ruleId={ruleId}
+        />
         {ruleSplit.map((fragment) => {
           if (fragment) {
             const ruleLink = inlineRules.find((rule) =>
@@ -82,19 +98,67 @@ export const RuleFilter: React.FC<RuleFilter> = ({ rule, chapters }) => {
     );
   } else {
     return (
-      <Highlighter
-        searchWords={[searchParam]}
-        textToHighlight={rule}
-        highlightClassName={highlight}
-      />
+      <>
+        <HyperLinkChapter
+          searchParam={searchParam}
+          chapterIdFromRule={chapterId}
+          ruleId={ruleId}
+        />
+        <Highlighter
+          searchWords={[searchParam]}
+          textToHighlight={ruleContent}
+          highlightClassName={highlight}
+        />
+      </>
     );
   }
 };
 
 function getInlineRule(rule: string) {
   const inlineRules = rule.match(
-    /(rule|see|rules|and) \d{3}((\.(\d{3}|\d{3}\w|\d{2}\w|\d{2}|\d{1}\w|\d{1})|)|)/gi
+    /(rule|see|rules|and) \d{3}((\.(\d{3}\w|\d{3}|\d{2}\w|\d{2}|\d{1}\w|\d{1})|)|)/gi
   );
 
   return inlineRules;
 }
+
+interface HyperLinkChapterProps {
+  searchParam: string;
+  chapterIdFromRule: string;
+  ruleId: string;
+}
+
+const HyperLinkChapter: React.FC<HyperLinkChapterProps> = ({
+  searchParam,
+  chapterIdFromRule,
+  ruleId,
+}) => {
+  const { chapters } = useRuleBook().ruleBook;
+  const { link } = useStyles();
+
+  const getChapterLink = (chapterId: string) => {
+    const matchChapter = chapters.find(
+      (chapter) => chapter.chapterId === chapterId
+    );
+    if (matchChapter) {
+      return `${matchChapter.chapterId}-${matchChapter.chapterTitle.replace(
+        /\s|\./g,
+        "-"
+      )}`;
+    }
+  };
+  return (
+    <>
+      {searchParam.length ? (
+        <Link
+          className={link}
+          to={`/rules/${getChapterLink(chapterIdFromRule)}`}
+        >
+          {`${chapterIdFromRule}.${ruleId}  `}
+        </Link>
+      ) : (
+        `${ruleId}. `
+      )}
+    </>
+  );
+};
