@@ -6,6 +6,7 @@ import Highlighter from "react-highlight-words";
 
 import { useRuleSearch } from "../../Contexts/RuleSearchContext";
 import { Chapter, Rule } from "../../common/interfaces";
+import { useRuleBook } from "../../Contexts/RuleBookContext";
 
 interface RuleFilterProps {
   rule: Rule;
@@ -61,7 +62,11 @@ export const RuleFilter: React.FC<RuleFilterProps> = ({ rule, chapters }) => {
 
     return (
       <>
-        {searchParam.length ? `${chapterId}.${ruleId}. ` : `${ruleId}. `}
+        <HyperLinkChapter
+          searchParam={searchParam}
+          chapterIdFromRule={chapterId}
+          ruleId={ruleId}
+        />
         {ruleSplit.map((fragment) => {
           if (fragment) {
             const ruleLink = inlineRules.find((rule) =>
@@ -93,15 +98,18 @@ export const RuleFilter: React.FC<RuleFilterProps> = ({ rule, chapters }) => {
     );
   } else {
     return (
-      <Highlighter
-        searchWords={[searchParam]}
-        textToHighlight={
-          searchParam.length
-            ? `${chapterId}.${ruleId}. ${ruleContent}`
-            : `${ruleId}. ${ruleContent}`
-        }
-        highlightClassName={highlight}
-      />
+      <>
+        <HyperLinkChapter
+          searchParam={searchParam}
+          chapterIdFromRule={chapterId}
+          ruleId={ruleId}
+        />
+        <Highlighter
+          searchWords={[searchParam]}
+          textToHighlight={ruleContent}
+          highlightClassName={highlight}
+        />
+      </>
     );
   }
 };
@@ -113,3 +121,44 @@ function getInlineRule(rule: string) {
 
   return inlineRules;
 }
+
+interface HyperLinkChapterProps {
+  searchParam: string;
+  chapterIdFromRule: string;
+  ruleId: string;
+}
+
+const HyperLinkChapter: React.FC<HyperLinkChapterProps> = ({
+  searchParam,
+  chapterIdFromRule,
+  ruleId,
+}) => {
+  const { chapters } = useRuleBook().ruleBook;
+  const { link } = useStyles();
+
+  const getChapterLink = (chapterId: string) => {
+    const matchChapter = chapters.find(
+      (chapter) => chapter.chapterId === chapterId
+    );
+    if (matchChapter) {
+      return `${matchChapter.chapterId}-${matchChapter.chapterTitle.replace(
+        /\s|\./g,
+        "-"
+      )}`;
+    }
+  };
+  return (
+    <>
+      {searchParam.length ? (
+        <Link
+          className={link}
+          to={`/rules/${getChapterLink(chapterIdFromRule)}`}
+        >
+          {`${chapterIdFromRule}.${ruleId}  `}
+        </Link>
+      ) : (
+        `${ruleId}. `
+      )}
+    </>
+  );
+};

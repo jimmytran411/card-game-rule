@@ -49,7 +49,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   activeList: {
     "& > div": {
       fontWeight: 800,
-      border: "3px solid #00000042",
+      backgroundColor: "#16263cad",
+      color: "white",
     },
     "& div:hover": {
       backgroundColor: "#16263c",
