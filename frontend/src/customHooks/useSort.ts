@@ -16,7 +16,7 @@ export const useSort = <T extends { [key: string]: any }>(
   const [{ order, orderBy }, setCurrentSort] = useState<
     Pick<ListHeaderProps, "order" | "orderBy">
   >({
-    orderBy: "number",
+    orderBy: "chapterId",
     order: "asc",
   });
   const [sortedData, setSortedData] = useState<typeof data>([]);

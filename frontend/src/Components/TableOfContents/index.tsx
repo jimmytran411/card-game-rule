@@ -127,8 +127,18 @@ const TableOfContents: React.FC = () => {
           <Divider />
           <ListHeader
             keys={[
-              { key: "number", gridSize: 3, cellClassName: headerCellNumber },
-              { key: "title", gridSize: 9, cellClassName: chapterTitleStyle },
+              {
+                key: "number",
+                sortKey: "chapterId",
+                gridSize: 3,
+                cellClassName: headerCellNumber,
+              },
+              {
+                key: "title",
+                sortKey: "chapterTitle",
+                gridSize: 9,
+                cellClassName: chapterTitleStyle,
+              },
             ]}
             order={order}
             orderBy={orderBy}

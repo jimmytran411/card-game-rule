@@ -32,7 +32,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export type ListHeaderProps = {
-  keys: { key: string; gridSize: GridSize; cellClassName?: string }[];
+  keys: {
+    sortKey: string;
+    key: string;
+    gridSize: GridSize;
+    cellClassName?: string;
+  }[];
   onRequestSort: (sortParam: string) => void;
   orderBy: string;
   order: "desc" | "asc";
@@ -57,7 +62,7 @@ export const ListHeader: React.FC<ListHeaderProps> = ({
       alignItems="center"
       justifyContent="center"
     >
-      {keys.map(({ key, gridSize, cellClassName }) => (
+      {keys.map(({ sortKey, key, gridSize, cellClassName }) => (
         <React.Fragment key={uuidV4()}>
           <Grid
             className={
@@ -67,9 +72,9 @@ export const ListHeader: React.FC<ListHeaderProps> = ({
             xs={gridSize}
           >
             <TableSortLabel
-              active={orderBy === key}
-              direction={orderBy === key ? order : "asc"}
-              onClick={createSortHandler(key)}
+              active={orderBy === sortKey}
+              direction={orderBy === sortKey ? order : "asc"}
+              onClick={createSortHandler(sortKey)}
             >
               <span>{_.capitalize(key)}</span>
             </TableSortLabel>
