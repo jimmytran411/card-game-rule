@@ -1,41 +1,41 @@
-import React from "react";
-import { makeStyles, createStyles, Theme, Button } from "@material-ui/core";
-import { NavLink } from "react-router-dom";
-import HomeIcon from "@material-ui/icons/Home";
-import MenuBookIcon from "@material-ui/icons/MenuBook";
+import React from 'react';
+import { makeStyles, createStyles, Theme, Button } from '@material-ui/core';
+import { NavLink } from 'react-router-dom';
+import HomeIcon from '@material-ui/icons/Home';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
 
-import { useRuleBook } from "../Contexts/RuleBookContext";
-import { RuleSearch } from "./RuleSearch";
+import { useRuleBook } from '../Contexts/RuleBookContext';
+import { RuleSearch } from './RuleSearch';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
       zIndex: theme.zIndex.drawer + 1,
-      display: "flex",
-      flexDirection: "column",
+      display: 'flex',
+      flexDirection: 'column',
       padding: 8,
     },
     navButton: {
       flexGrow: 1,
-      color: "#ffffff",
+      color: '#ffffff',
       borderRadius: 8,
       fontFamily: "'Dosis', sans-serif",
       fontSize: 24,
-      padding: "8px 16px",
-      "&:hover": {
+      padding: '8px 16px',
+      '&:hover': {
         borderRadius: 8,
-        color: "#6ae7fd",
+        color: '#6ae7fd',
       },
     },
     activeNav: {
-      "& button": {
-        borderBottom: "1px solid #ffffff",
+      '& button': {
+        borderBottom: '1px solid #ffffff',
         borderRadius: 0,
       },
     },
     nav: {
-      textDecoration: "none",
+      textDecoration: 'none',
       borderRadius: 8,
       margin: 8,
     },
@@ -55,7 +55,7 @@ export const NavBar: React.FC = () => {
 
   React.useEffect(() => {
     const { chapters, rules } = ruleBook;
-    if (!chapters.length || !rules.length) {
+    if (!chapters || !rules || !chapters.length || !rules.length) {
       setIsRuleBookEmpty(true);
     } else {
       setIsRuleBookEmpty(false);

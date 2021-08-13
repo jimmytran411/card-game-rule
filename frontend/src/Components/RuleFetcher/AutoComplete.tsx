@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from "react";
-import TextField from "@material-ui/core/TextField";
-import HistoryIcon from "@material-ui/icons/History";
-import WbIncandescentIcon from "@material-ui/icons/WbIncandescent";
-import { Grid, makeStyles, List, ListItem } from "@material-ui/core";
-import { v4 } from "uuid";
+import React, { useEffect, useState } from 'react';
+import TextField from '@material-ui/core/TextField';
+import HistoryIcon from '@material-ui/icons/History';
+import WbIncandescentIcon from '@material-ui/icons/WbIncandescent';
+import { Grid, makeStyles, List, ListItem } from '@material-ui/core';
+import { v4 } from 'uuid';
 
-import { useComponentVisible } from "../../customHooks/useComponentVisible";
-import Highlighter from "react-highlight-words";
+import { useComponentVisible } from '../../customHooks/useComponentVisible';
+import Highlighter from 'react-highlight-words';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    [theme.breakpoints.up("xl")]: {
-      width: "50%",
+    [theme.breakpoints.up('xl')]: {
+      width: '50%',
     },
-    width: "70%",
+    width: '70%',
   },
   option: {
-    borderBottom: "1px solid #9494943d",
-    "& div": {
-      "& div": {
-        overflow: "hidden",
-        whiteSpace: "nowrap",
-        textOverflow: "ellipsis",
+    borderBottom: '1px solid #9494943d',
+    '& div': {
+      '& div': {
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
         maxWidth: 405,
-        [theme.breakpoints.up("xl")]: {
+        [theme.breakpoints.up('xl')]: {
           maxWidth: 750,
         },
       },
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
   highlight: {
     fontWeight: 700,
-    color: "white",
+    color: 'white',
     backgroundColor: theme.palette.text.disabled,
   },
 }));
@@ -52,23 +52,18 @@ interface AutoCompleteProps {
   changeValue: any;
 }
 
-export default function AutoComplete({
-  inputClassName,
-  value,
-  changeValue,
-}: AutoCompleteProps) {
-  const [recentUrl, setRecentUrl] = useState<string[] | undefined[]>([""]);
+export default function AutoComplete({ inputClassName, value, changeValue }: AutoCompleteProps) {
+  const [recentUrl, setRecentUrl] = useState<string[] | undefined[]>(['']);
   const [options, setOptions] = useState<Option[]>([]);
   const [searchOptions, setSearchOptions] = useState<Option[]>([]);
-  const [ruleParam, setRuleParam] = useState("");
+  const [ruleParam, setRuleParam] = useState('');
 
-  const { ref, isComponentVisible, setIsComponentVisible } =
-    useComponentVisible(false);
+  const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
   const { option, list, root, highlight } = useStyles();
 
   useEffect(() => {
-    const recentInput = localStorage.getItem("ruleFetch");
-    recentInput && setRecentUrl(recentInput.split(" -/ "));
+    const recentInput = localStorage.getItem('ruleFetch');
+    recentInput && setRecentUrl(recentInput.split(' -/ '));
   }, []);
 
   useEffect(() => {
@@ -107,10 +102,7 @@ export default function AutoComplete({
     setTimeout(() => {
       setRuleParam(event.target.value);
       setSearchOptions(
-        options.filter(
-          ({ url }) =>
-            url && url.toLowerCase().includes(event.target.value.toLowerCase())
-        )
+        options.filter(({ url }) => url && url.toLowerCase().includes(event.target.value.toLowerCase()))
       );
     }, 250);
   };
@@ -147,12 +139,7 @@ export default function AutoComplete({
                       {suggestion && <WbIncandescentIcon />}
                     </Grid>
                     <Grid item xs={11}>
-                      <Highlighter
-                        searchWords={[ruleParam]}
-                        textToHighlight={url}
-                        highlightClassName={highlight}
-                      />
-                      {url}
+                      <Highlighter searchWords={[ruleParam]} textToHighlight={url} highlightClassName={highlight} />
                     </Grid>
                   </Grid>
                 </ListItem>
