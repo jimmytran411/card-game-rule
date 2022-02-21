@@ -30,7 +30,7 @@
     "@types/cors": "^2.8.12",
     "@types/lodash": "^4.14.171",
     "@types/memory-cache": "^0.2.1",
-    "axios": "^0.21.1",
+    "axios": "^0.26.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "lodash": "^4.17.21",
